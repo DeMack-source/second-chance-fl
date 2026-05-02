@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Second Chance">
+<meta name="application-name" content="Second Chance">
+<meta name="theme-color" content="#08111f">
+<meta name="description" content="Florida Reentry Navigation Portal — Phase-by-phase guidance, 50+ resources, legal rights, GPS locator. Curated by Devyn Mack.">
+<title>Second Chance | Florida Reentry Portal</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>
+// Register Service Worker for offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW failed:', err));
+  });
+}
+</script>
+<style>
+:root {
+  --navy:#08111f; --navy-mid:#0f1e35; --navy-card:#112240; --navy-light:#1a3155;
+  --gold:#f0a500; --gold-light:#ffd166; --gold-dim:rgba(240,165,0,0.15);
+  --teal:#06d6a0; --teal-dark:#04a87d;
+  --red:#ef233c; --sky:#48cae4; --purple:#7c3aed;
+  --white:#f0f4f8; --text:#d8e2ef; --text-dim:#7a90a8;
+  --card-border:rgba(240,165,0,0.18);
+  --glow-gold:0 0 24px rgba(240,165,0,0.25);
+  --glow-teal:0 0 20px rgba(6,214,160,0.25);
+  --glow-red:0 0 20px rgba(239,35,60,0.35);
+  --ph1:#c0392b; --ph2:#2471a3; --ph3:#1e8449; --ph4:#7d3c98;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 15% 15%,rgba(6,214,160,.05) 0%,transparent 55%),
+  radial-gradient(ellipse at 85% 85%,rgba(240,165,0,.05) 0%,transparent 55%),
+  radial-gradient(ellipse at 50% 50%,rgba(15,30,53,1) 0%,var(--navy) 100%)}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f0a500' fill-opacity='0.03'%3E%3Cpath d='M20 20h1v1h-1z'/%3E%3C/g%3E%3C/svg%3E")}
+.app{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:14px}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,var(--navy-mid) 0%,var(--navy-light) 100%);border:1px solid rgba(240,165,0,.35);border-radius:16px;padding:26px 24px 22px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:var(--glow-gold),0 12px 40px rgba(0,0,0,.6);isolation:isolate}
+.header::before{content:'SECOND\A CHANCE';position:absolute;right:-10px;top:-18px;font-family:'Bebas Neue',sans-serif;font-size:90px;line-height:.9;color:rgba(240,165,0,.04);pointer-events:none;letter-spacing:3px;white-space:pre}
+.header-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.brand h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,6vw,42px);letter-spacing:3px;line-height:1;color:var(--white)}
+.brand h1 span{color:var(--gold)}
+.brand .sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);text-transform:uppercase;letter-spacing:3px;margin-top:6px}
+.header-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.meta-pill{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:5px 10px;border-radius:20px}
+.meta-pill span{color:var(--gold)}
+
+/* PHASE ROADMAP */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.phase-card{background:var(--navy-card);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden;isolation:isolate}
+.phase-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pc,var(--gold));transition:height .25s}
+.phase-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.15)}
+.phase-card:hover::before,.phase-card.active::before{height:5px}
+.phase-card.active{border-color:var(--pc,var(--gold));box-shadow:0 0 20px rgba(0,0,0,.5)}
+.phase-card[data-phase="1"]{--pc:var(--ph1)}
+.phase-card[data-phase="2"]{--pc:var(--ph2)}
+.phase-card[data-phase="3"]{--pc:var(--ph3)}
+.phase-card[data-phase="4"]{--pc:var(--ph4)}
+.pc-label{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--pc,var(--gold));margin-bottom:4px}
+.pc-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;color:var(--white);line-height:1.1}
+.pc-window{font-size:10px;color:var(--text-dim);margin-top:4px}
+.pc-pct{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--pc,var(--gold));margin-top:6px}
+.pc-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;overflow:hidden}
+.pc-fill{height:100%;width:0%;background:var(--pc,var(--gold));transition:width .6s cubic-bezier(.34,1.56,.64,1)}
+
+/* GLOBAL PROGRESS */
+.prog-global{background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.prog-label{font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--gold)}
+.prog-pct{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal)}
+.prog-track{height:8px;background:rgba(255,255,255,.07);border-radius:8px;overflow:hidden}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal-dark),var(--teal),#90e0ef);border-radius:8px;transition:width .7s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--glow-teal)}
+.ms-strip{display:flex;justify-content:space-between;margin-top:8px}
+.ms{font-size:10px;color:var(--text-dim);text-align:center}
+.ms.hit{color:var(--teal);font-weight:600}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.stat{background:var(--navy-card);border:1px solid var(--card-border);border-radius:10px;padding:12px 8px;text-align:center;transition:transform .2s}
+.stat:hover{transform:translateY(-2px)}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--gold)}
+.stat-l{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* TABS */
+.tab-nav{display:flex;gap:4px;background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:9px 14px;border:none;border-radius:8px;cursor:pointer;background:transparent;color:var(--text-dim);transition:all .2s;white-space:nowrap;flex-shrink:0}
+.tab-btn:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.tab-btn.active{background:var(--gold);color:var(--navy);box-shadow:var(--glow-gold)}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* PHASE HEADERS */
+.phase-hdr{border-radius:12px;padding:20px 22px;margin-bottom:14px;position:relative;overflow:hidden}
+.ph1{background:linear-gradient(135deg,#6b0f1a,#c0392b);border:1px solid rgba(192,57,43,.5)}
+.ph2{background:linear-gradient(135deg,#0f2b4e,#2471a3);border:1px solid rgba(36,113,163,.5)}
+.ph3{background:linear-gradient(135deg,#0d3320,#1e8449);border:1px solid rgba(30,132,73,.5)}
+.ph4{background:linear-gradient(135deg,#2c0f45,#7d3c98);border:1px solid rgba(125,60,152,.5)}
+.phase-quote{font-size:13px;font-style:italic;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:12px;border-left:3px solid rgba(255,255,255,.3);padding-left:12px}
+.phase-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,5vw,32px);letter-spacing:3px;color:white}
+.phase-sub{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.6);letter-spacing:2px;margin-top:4px}
+
+/* SECOND CHANCE VOICE */
+.sc-voice{background:rgba(240,165,0,.04);border:1px solid rgba(240,165,0,.3);border-radius:10px;padding:16px 18px;margin-bottom:14px;position:relative}
+.sc-voice::before{content:'"';position:absolute;top:-6px;left:14px;font-family:'Bebas Neue',sans-serif;font-size:60px;color:rgba(240,165,0,.2);line-height:1}
+.sc-tag{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.sc-text{font-size:13px;font-style:italic;color:rgba(255,255,255,.8);line-height:1.7}
+.sc-attr{font-family:'Space Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:8px}
+
+/* CHECKLIST */
+.cl-group{background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:18px;margin-bottom:12px}
+.cl-group-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cl-group-title small{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:0;font-weight:400;font-style:normal}
+.cl-item{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:8px;cursor:pointer;transition:background .2s;position:relative;z-index:2;margin-bottom:4px}
+.cl-item:hover{background:rgba(255,255,255,.03)}
+.cl-item.done{opacity:.55}
+.cl-item.done .cl-text strong{text-decoration:line-through}
+.cl-box{width:20px;height:20px;flex-shrink:0;border:2px solid var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px;transition:all .2s;background:transparent;color:var(--teal)}
+.cl-item.done .cl-box{background:var(--teal);border-color:var(--teal)}
+.cl-text strong{display:block;font-size:13px;color:var(--white);margin-bottom:2px}
+.cl-text small{font-size:11px;color:var(--text-dim);line-height:1.5;display:block}
+.cl-text .cl-law{font-family:'Space Mono',monospace;font-size:9px;color:rgba(240,165,0,.65);margin-top:3px}
+.pri{font-family:'Space Mono',monospace;font-size:8px;padding:2px 6px;border-radius:4px;margin-left:6px;text-transform:uppercase;letter-spacing:.5px;vertical-align:middle}
+.pri-critical{background:rgba(239,35,60,.2);color:var(--red);border:1px solid rgba(239,35,60,.3)}
+.pri-high{background:rgba(240,165,0,.15);color:var(--gold);border:1px solid rgba(240,165,0,.25)}
+.pri-standard{background:rgba(72,202,228,.1);color:var(--sky);border:1px solid rgba(72,202,228,.2)}
+
+/* RIGHTS */
+.rights-grid{display:grid;gap:8px;margin-bottom:14px}
+.right-item{background:var(--navy-card);border:1px solid rgba(255,255,255,.07);border-left:4px solid var(--gold);border-radius:8px;padding:14px 16px;transition:all .2s;position:relative;z-index:2}
+.right-item:hover{border-left-color:var(--teal);transform:translateX(3px)}
+.right-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+.right-statute{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px}
+.right-desc{font-size:12px;color:var(--text-dim);line-height:1.55}
+
+/* RESOURCE CONTROLS */
+.ctrl-bar{background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.ctrl{flex:1;min-width:140px}
+.ctrl label{display:block;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.ctrl select,.ctrl input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+.ctrl select:focus,.ctrl input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 2px rgba(240,165,0,.12)}
+.ctrl select option{background:var(--navy-mid)}
+
+/* RESOURCE SECTIONS */
+.res-section{margin-bottom:12px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+.res-hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none;transition:opacity .2s}
+.res-hdr:hover{opacity:.85}
+.res-left{display:flex;align-items:center;gap:10px}
+.res-icon{font-size:18px}
+.res-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:white}
+.res-count{font-family:'Space Mono',monospace;font-size:10px;background:rgba(255,255,255,.12);padding:2px 8px;border-radius:10px}
+.res-chev{font-size:11px;color:rgba(255,255,255,.5);transition:transform .3s}
+.res-chev.open{transform:rotate(180deg)}
+.t-emergency{background:linear-gradient(135deg,#6b0c13,#a01a25)}
+.t-housing{background:linear-gradient(135deg,#0a3f6e,#0d5fa0)}
+.t-employ{background:linear-gradient(135deg,#063d2e,#0d7055)}
+.t-legal{background:linear-gradient(135deg,#2e0f5e,#4e1d9e)}
+.t-health{background:linear-gradient(135deg,#5e3200,#9e5a00)}
+.t-benefits{background:linear-gradient(135deg,#003a5e,#005e9e)}
+.t-edu{background:linear-gradient(135deg,#1a3800,#305800)}
+.t-id{background:linear-gradient(135deg,#3d1500,#6e2a00)}
+.res-body{padding:14px;background:rgba(8,17,31,.7);display:none}
+.res-body.open{display:block;animation:fadeUp .2s ease}
+
+/* RESOURCE CARDS */
+.r-card{background:var(--navy-card);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:15px;margin-bottom:10px;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;z-index:2;isolation:isolate}
+.r-card:hover{transform:translateY(-2px);border-color:rgba(240,165,0,.25);box-shadow:0 6px 20px rgba(0,0,0,.45)}
+.r-card.contacted{border-color:rgba(6,214,160,.35);background:rgba(6,214,160,.04)}
+.r-card.hidden{display:none}
+.r-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.r-name{font-size:14px;font-weight:700;color:var(--white);flex:1;min-width:0}
+.badge-co{font-family:'Space Mono',monospace;font-size:8px;color:var(--sky);background:rgba(72,202,228,.1);border:1px solid rgba(72,202,228,.25);padding:3px 7px;border-radius:4px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
+.badge-rec{font-family:'Space Mono',monospace;font-size:8px;color:var(--gold);background:rgba(240,165,0,.12);border:1px solid rgba(240,165,0,.25);padding:3px 7px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.r-desc{font-size:12px;color:var(--text-dim);line-height:1.55;margin-bottom:8px}
+.r-law{font-family:'Space Mono',monospace;font-size:9px;color:rgba(240,165,0,.6);margin-bottom:8px}
+.r-links{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.r-links a{font-family:'Space Mono',monospace;font-size:10px;text-decoration:none;padding:7px 12px;border-radius:6px;transition:all .2s;position:relative;z-index:10;display:inline-flex;align-items:center;gap:5px;cursor:pointer;border:1px solid;font-weight:700}
+.tl{color:var(--teal);background:rgba(6,214,160,.1);border-color:rgba(6,214,160,.3)}
+.tl:hover{background:rgba(6,214,160,.22);box-shadow:var(--glow-teal);color:white;transform:translateY(-1px)}
+.wl{color:var(--sky);background:rgba(72,202,228,.08);border-color:rgba(72,202,228,.2)}
+.wl:hover{background:rgba(72,202,228,.2);color:white;transform:translateY(-1px)}
+.r-actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.btn-log{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;background:rgba(6,214,160,.1);color:var(--teal);border:1px solid rgba(6,214,160,.3);padding:7px 12px;border-radius:7px;cursor:pointer;transition:all .2s;position:relative;z-index:10}
+.btn-log:hover{background:rgba(6,214,160,.22);box-shadow:var(--glow-teal)}
+.btn-log.done{background:rgba(6,214,160,.2);border-color:var(--teal)}
+.btn-notes{font-family:'DM Sans',sans-serif;font-size:11px;background:rgba(255,255,255,.04);color:var(--text-dim);border:1px solid rgba(255,255,255,.09);padding:7px 10px;border-radius:7px;cursor:pointer;transition:all .2s;position:relative;z-index:10}
+.btn-notes:hover{color:var(--white);background:rgba(255,255,255,.09)}
+.note-area{margin-top:10px;display:none}
+.note-area.open{display:block;animation:fadeUp .2s ease}
+.note-ta{width:100%;min-height:65px;resize:vertical;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:7px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:9px 11px;transition:border-color .2s}
+.note-ta:focus{outline:none;border-color:var(--gold)}
+.note-ta::placeholder{color:var(--text-dim);opacity:.5}
+.note-saved{font-family:'Space Mono',monospace;font-size:9px;color:var(--teal);margin-top:3px;opacity:0;transition:opacity .3s}
+.note-saved.show{opacity:1}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-dim);display:none}
+.empty-state.show{display:block}
+
+/* JOURNAL */
+.j-wrap{background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:20px;margin-bottom:14px}
+.j-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold);margin-bottom:14px}
+.j-prompt-label{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:5px}
+.j-prompt-text{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;font-style:italic}
+.j-ta{width:100%;min-height:110px;resize:vertical;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;padding:12px 14px;margin-bottom:10px;transition:border-color .2s}
+.j-ta:focus{outline:none;border-color:var(--gold)}
+.j-ta::placeholder{color:var(--text-dim);opacity:.45}
+.btn-save{background:var(--gold);color:var(--navy);border:none;padding:10px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s}
+.btn-save:hover{background:var(--gold-light);box-shadow:var(--glow-gold)}
+.j-entry{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:13px;margin-top:10px;position:relative}
+.j-meta{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);margin-bottom:7px}
+.j-body{font-size:12px;color:var(--text-dim);line-height:1.6;white-space:pre-wrap}
+.btn-del{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;padding:2px 5px;transition:color .2s;z-index:10}
+.btn-del:hover{color:var(--red)}
+
+/* LOG */
+.log-wrap{background:var(--navy-card);border:1px solid var(--card-border);border-radius:12px;padding:20px;margin-bottom:14px}
+.log-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold);margin-bottom:14px}
+.log-entry{background:rgba(255,255,255,.03);border-left:3px solid var(--teal);padding:9px 13px;border-radius:6px;margin-bottom:7px}
+.log-entry strong{display:block;color:var(--white);font-size:12px}
+.log-entry small{color:var(--text-dim);font-family:'Space Mono',monospace;font-size:9px}
+.log-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+/* BUTTONS */
+.btn-export{background:rgba(72,202,228,.1);color:var(--sky);border:1px solid rgba(72,202,228,.25);padding:9px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;transition:all .2s}
+.btn-export:hover{background:rgba(72,202,228,.2)}
+.btn-danger{background:rgba(239,35,60,.1);color:var(--red);border:1px solid rgba(239,35,60,.3);padding:9px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;transition:all .2s}
+.btn-danger:hover{background:rgba(239,35,60,.2);box-shadow:var(--glow-red)}
+
+/* FAB */
+.fab-cluster{position:fixed;bottom:22px;right:18px;z-index:8000;display:flex;flex-direction:column;gap:9px}
+.fab{width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;font-size:19px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.55);transition:all .2s}
+.fab:hover{transform:scale(1.1)}
+.fab:active{transform:scale(.95)}
+.fab-gold{background:var(--gold)}
+.fab-teal{background:var(--teal-dark);color:white}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none}
+.toast{background:var(--navy-mid);border:1px solid var(--gold);color:var(--white);font-family:'Space Mono',monospace;font-size:11px;padding:9px 18px;border-radius:30px;box-shadow:var(--glow-gold),0 4px 20px rgba(0,0,0,.6);opacity:0;transform:translateY(10px);transition:all .3s;white-space:nowrap}
+.toast.on{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:640px){.roadmap{grid-template-columns:repeat(2,1fr)}.stats-row{grid-template-columns:repeat(3,1fr)}.tab-btn{padding:8px 10px;font-size:11px}}
+@media(max-width:420px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+@media print{.fab-cluster,.tab-nav,.ctrl-bar,.btn-log,.btn-notes{display:none!important}body,.app{background:white;color:black}.r-card{border:1px solid #ccc;break-inside:avoid}body::before,body::after{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:rgba(255,255,255,.02)}
+::-webkit-scrollbar-thumb{background:rgba(240,165,0,.3);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <h1>🌴 Second <span>Chance</span></h1>
+      <div class="sub">Florida Reentry Navigation Portal · Version 2026.1 · Curated by Devyn Mack</div>
+    </div>
+    <div class="header-meta">
+      <div class="meta-pill" id="headerDate">—</div>
+      <div class="meta-pill">Days Tracking: <span id="metaDays">0</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE ROADMAP -->
+<div class="roadmap">
+  <div class="phase-card" data-phase="1" onclick="switchTab('phase1')">
+    <div class="pc-label">Phase 1</div><div class="pc-title">First 72 Hours</div>
+    <div class="pc-window">Survival</div><div class="pc-pct" id="ph1pct">0%</div>
+    <div class="pc-bar"><div class="pc-fill" id="ph1bar"></div></div>
+  </div>
+  <div class="phase-card" data-phase="2" onclick="switchTab('phase2')">
+    <div class="pc-label">Phase 2</div><div class="pc-title">First 30 Days</div>
+    <div class="pc-window">Infrastructure</div><div class="pc-pct" id="ph2pct">0%</div>
+    <div class="pc-bar"><div class="pc-fill" id="ph2bar"></div></div>
+  </div>
+  <div class="phase-card" data-phase="3" onclick="switchTab('phase3')">
+    <div class="pc-label">Phase 3</div><div class="pc-title">90-Day Pivot</div>
+    <div class="pc-window">Leverage</div><div class="pc-pct" id="ph3pct">0%</div>
+    <div class="pc-bar"><div class="pc-fill" id="ph3bar"></div></div>
+  </div>
+  <div class="phase-card" data-phase="4" onclick="switchTab('phase4')">
+    <div class="pc-label">Phase 4</div><div class="pc-title">One Year</div>
+    <div class="pc-window">Citizenship</div><div class="pc-pct" id="ph4pct">0%</div>
+    <div class="pc-bar"><div class="pc-fill" id="ph4bar"></div></div>
+  </div>
+</div>
+
+<!-- GLOBAL PROGRESS -->
+<div class="prog-global">
+  <div class="prog-row">
+    <div class="prog-label">🏆 Overall Reentry Progress</div>
+    <div class="prog-pct" id="globalPct">0%</div>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="globalFill"></div></div>
+  <div class="ms-strip">
+    <div class="ms" data-ms="10">10%</div>
+    <div class="ms" data-ms="25">25%</div>
+    <div class="ms" data-ms="50">50% ⭐</div>
+    <div class="ms" data-ms="75">75%</div>
+    <div class="ms" data-ms="100">100% 🏆</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat"><div class="stat-n" id="s-contacted">0</div><div class="stat-l">Contacted</div></div>
+  <div class="stat"><div class="stat-n" id="s-tasks">0</div><div class="stat-l">Tasks Done</div></div>
+  <div class="stat"><div class="stat-n" id="s-journal">0</div><div class="stat-l">Journal</div></div>
+  <div class="stat"><div class="stat-n" id="s-days">0</div><div class="stat-l">Days Out</div></div>
+  <div class="stat"><div class="stat-n" id="s-total">0</div><div class="stat-l">Resources</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('phase1')">⚡ Phase 1</button>
+  <button class="tab-btn" onclick="switchTab('phase2')">🏗 Phase 2</button>
+  <button class="tab-btn" onclick="switchTab('phase3')">⚖️ Phase 3</button>
+  <button class="tab-btn" onclick="switchTab('phase4')">🗳 Phase 4</button>
+  <button class="tab-btn" onclick="switchTab('rights')">📜 Your Rights</button>
+  <button class="tab-btn" onclick="switchTab('resources')">📋 Resources</button>
+  <button class="tab-btn" onclick="switchTab('journal')">📝 Journal</button>
+  <button class="tab-btn" onclick="switchTab('log')">📊 Log</button>
+</div>
+
+<!-- ═══ PHASE 1 ═══ -->
+<div class="tab-panel active" id="tab-phase1">
+  <div class="phase-hdr ph1">
+    <div class="phase-quote">"The gate opens. Not all the way. Not automatically. Not without a fight. But it opens." — Second Chance</div>
+    <div class="phase-title">⚡ PHASE 1: The First 72 Hours</div>
+    <div class="phase-sub">SURVIVAL · The clock starts before the adrenaline fades · Fla. Stat. § 948.03</div>
+  </div>
+  <div class="sc-voice">
+    <div class="sc-tag">Second Chance Speaks — Release Day Reality Check</div>
+    <div class="sc-text">Florida law does not pause for the emotional weight of release day. The 48-hour window for sheriff registration began the moment your foot touched free ground. The probation reporting window is already counting down. The drug test at your first P.O. meeting does not care that this is the best day you've had in years. Move with urgency. Win the first 72 hours and every phase that follows gets easier.</div>
+    <div class="sc-attr">— Roger Pitts / Second Chance · Version 2026.1 · Curated by Devyn Mack</div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🚨 0–48 Hours: CRITICAL ACTIONS <small>Do these before anything else — no detours</small></div>
+    <div id="cl-p1-critical"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">📋 24–72 Hours: Probation & ID Recovery Sequence</div>
+    <div id="cl-p1-docs"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🤝 Within 72 Hours: Activate Your Support Network</div>
+    <div id="cl-p1-support"></div>
+  </div>
+</div>
+
+<!-- ═══ PHASE 2 ═══ -->
+<div class="tab-panel" id="tab-phase2">
+  <div class="phase-hdr ph2">
+    <div class="phase-quote">"Day 14 is where most men break. The adrenaline of release day is gone. The money is running out. The employer hasn't called back. This is the moment the infrastructure either holds or collapses." — Second Chance</div>
+    <div class="phase-title">🏗 PHASE 2: The First 30 Days</div>
+    <div class="phase-sub">BUILDING THE INFRASTRUCTURE · Employment · Financial Integrity · Housing · Fla. Stat. § 948.09</div>
+  </div>
+  <div class="sc-voice">
+    <div class="sc-tag">Second Chance — The Financial Audit Warning</div>
+    <div class="sc-text">The balance is always worse than you expect. Log into the Clerk of Court portal before you do anything else in Phase 2. Write the full number down. Don't soften it. The Bona Fide Effort Defense only works if you know the exact number you're making a bona fide effort against. Poverty is not willful non-payment — but you must document the effort.</div>
+    <div class="sc-attr">— Roger Pitts / Second Chance · Fla. Stat. § 948.06(5) · Bearden v. Georgia (1983)</div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">💳 Financial Mastery <small>Pillar III — Fla. Stat. § 948.09</small></div>
+    <div id="cl-p2-finance"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">💼 Economic Resuscitation <small>Pillar II — Defeat "The Box"</small></div>
+    <div id="cl-p2-employ"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🏠 Housing Stability <small>Fla. Stat. § 948.03(1)(i)</small></div>
+    <div id="cl-p2-housing"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🛡 Safety Net Benefits <small>Apply immediately — don't wait</small></div>
+    <div id="cl-p2-benefits"></div>
+  </div>
+</div>
+
+<!-- ═══ PHASE 3 ═══ -->
+<div class="tab-panel" id="tab-phase3">
+  <div class="phase-hdr ph3">
+    <div class="phase-quote">"This is where most people stop — heads down, surviving. This is where you accelerate. The 90-day pivot is when compliance becomes strategy." — Second Chance</div>
+    <div class="phase-title">⚖️ PHASE 3: The 90-Day Pivot</div>
+    <div class="phase-sub">LEVERAGE · Judicial Strategy · Early Termination · Pillar IV · Fla. Stat. § 948.04</div>
+  </div>
+  <div class="sc-voice">
+    <div class="sc-tag">Second Chance — On Filing Pro Se for the First Time</div>
+    <div class="sc-text">The day you walk into the clerk's office with a motion you wrote yourself — organized, tabbed, documented — the power dynamic in that building changes. Judges respond to organized documentation. The 90-Day Compliance Log is not paperwork. It is a portrait of a man who chose, every single day, to be something the system said he couldn't be. That is evidence of a life being rebuilt.</div>
+    <div class="sc-attr">— Roger Pitts / Second Chance · Fla. Stat. § 948.04 / Fla. R. Crim. P. 3.800</div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">📁 Build Your Evidence Box <small>Appendix A — 90-Day Compliance & Victory Log</small></div>
+    <div id="cl-p3-evidence"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">⚖️ Judicial Leverage: Early Termination <small>Fla. Stat. § 948.04</small></div>
+    <div id="cl-p3-legal"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🔄 Sentence Modification <small>Fla. R. Crim. P. 3.800</small></div>
+    <div id="cl-p3-modify"></div>
+  </div>
+</div>
+
+<!-- ═══ PHASE 4 ═══ -->
+<div class="tab-panel" id="tab-phase4">
+  <div class="phase-hdr ph4">
+    <div class="phase-quote">"One year out. Citizenship is not given back — it is argued for. This is the difference between surviving and reclaiming." — Second Chance</div>
+    <div class="phase-title">🗳 PHASE 4: The One-Year Anniversary</div>
+    <div class="phase-sub">CITIZENSHIP · Voting Rights · Clemency · Rights Restoration · Art. VI, § 4, Fla. Const.</div>
+  </div>
+  <div class="sc-voice">
+    <div class="sc-tag">Second Chance — On Casting Your Vote for the First Time in Decades</div>
+    <div class="sc-text">The ballot is real. It took me eight years to get there. The Safe Harbor Advisory Opinion from the Division of Elections makes it safe — get one in writing before you register. One dollar owed in LFOs makes you ineligible under Amendment 4. Clear the financial obligations first. Then vote. The clemency binder you build today is what the Governor will see in 5–7 years. Start building it today.</div>
+    <div class="sc-attr">— Roger Pitts / Second Chance · Amendment 4 · Art. VI, § 4, Fla. Const.</div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🗳 Voting Rights Restoration <small>Amendment 4 — Fla. Const. · The LFO Trap</small></div>
+    <div id="cl-p4-voting"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">📜 Clemency & Rights Restoration <small>5–7 Year Strategy — Start the Binder NOW</small></div>
+    <div id="cl-p4-clemency"></div>
+  </div>
+  <div class="cl-group">
+    <div class="cl-group-title">🏛 Professional Licensing & Long-Term Goals</div>
+    <div id="cl-p4-longterm"></div>
+  </div>
+</div>
+
+<!-- ═══ YOUR RIGHTS ═══ -->
+<div class="tab-panel" id="tab-rights">
+  <div class="sc-voice">
+    <div class="sc-tag">The Florida Felon Bill of Rights — Strategic Overview</div>
+    <div class="sc-text">Before Phase 1 begins, before the first P.O. meeting, before the first job application — know one foundational truth: the Florida legal system contains within it a set of rights and protections that are already yours. Not rights you must earn. Not rights you must wait for. Rights that exist now, in the statutes, and can be invoked immediately by anyone who knows they are there. The system relies on the returning citizen not knowing these rights exist. This page is the antidote to that strategy. Print it. Read it. Know it.</div>
+    <div class="sc-attr">— Roger Pitts / Second Chance · Version 2026.1 · Curated by Devyn Mack</div>
+  </div>
+  <div class="rights-grid" id="rightsGrid"></div>
+</div>
+
+<!-- ═══ RESOURCES ═══ -->
+<div class="tab-panel" id="tab-resources">
+  <div class="ctrl-bar">
+    <div class="ctrl">
+      <label>📍 County</label>
+      <select id="countyFilter">
+        <option value="all">All Florida Counties</option>
+        <option value="broward">Broward (Ft. Lauderdale)</option>
+        <option value="miami-dade">Miami-Dade</option>
+        <option value="palm-beach">Palm Beach</option>
+        <option value="duval">Duval (Jacksonville)</option>
+        <option value="hillsborough">Hillsborough (Tampa)</option>
+        <option value="orange">Orange (Orlando)</option>
+        <option value="pinellas">Pinellas (Clearwater)</option>
+        <option value="leon">Leon (Tallahassee)</option>
+        <option value="alachua">Alachua (Gainesville)</option>
+        <option value="volusia">Volusia (Daytona Beach)</option>
+      </select>
+    </div>
+    <div class="ctrl">
+      <label>🔍 Search</label>
+      <input type="search" id="searchInput" placeholder="housing, jobs, legal, crisis…">
+    </div>
+    <div class="ctrl" style="max-width:150px;">
+      <label>📁 Category</label>
+      <select id="catFilter">
+        <option value="all">All</option>
+        <option value="emergency">Emergency</option>
+        <option value="housing">Housing</option>
+        <option value="employment">Employment</option>
+        <option value="legal">Legal</option>
+        <option value="health">Health</option>
+        <option value="benefits">Benefits</option>
+        <option value="education">Education</option>
+        <option value="id">ID & Docs</option>
+      </select>
+    </div>
+  </div>
+  <div class="empty-state" id="emptyState"><div style="font-size:36px;margin-bottom:10px">🔍</div><p>No resources match. Try different keywords.</p></div>
+
+  <!-- EMERGENCY -->
+  <div class="res-section" data-category="emergency">
+    <div class="res-hdr t-emergency" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">🚨</span><span class="res-title">EMERGENCY CONTACTS</span><span class="res-count">3</span></div>
+      <span class="res-chev open">▼</span>
+    </div>
+    <div class="res-body open">
+      <div class="r-card" data-county="all" data-category="emergency">
+        <div class="r-top"><div class="r-name">988 Suicide & Crisis Lifeline</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">24/7 confidential support. Call or text 988. Real people, no judgment. Available in Spanish. If you're at a breaking point — make this call first. No matter what.</div>
+        <div class="r-links"><a class="tl" href="tel:988" onclick="app.link(event,this)">📞 Call or Text 988</a></div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'988-crisis')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes, callback info, dates…" data-id="988-crisis"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="emergency">
+        <div class="r-top"><div class="r-name">SAMHSA Substance Abuse Helpline</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">Free, confidential 24/7 treatment referral. Substance abuse and mental health. Manual Key Phone Number — Day 1 call. Judgment-free, multilingual.</div>
+        <div class="r-links"><a class="tl" href="tel:18006624357" onclick="app.link(event,this)">📞 1-800-662-4357</a></div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'samhsa')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="samhsa"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="emergency">
+        <div class="r-top"><div class="r-name">211 Florida — Full Service Hotline</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Dial 211 for immediate local help — housing, food, crisis, utilities, mental health. 24/7. First call when you don't know who else to call.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:211" onclick="app.link(event,this)">📞 Dial 211</a>
+          <a class="wl" href="https://www.211florida.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 211florida.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'211-fl')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="211-fl"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REENTRY PROGRAMS -->
+  <div class="res-section" data-category="employment">
+    <div class="res-hdr t-employ" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">🤝</span><span class="res-title">REENTRY PROGRAMS & EMPLOYMENT</span><span class="res-count">6</span></div>
+      <span class="res-chev">▼</span>
+    </div>
+    <div class="res-body">
+      <div class="r-card" data-county="all" data-category="employment">
+        <div class="badge-rec">⭐ MANUAL KEY — Pillar II · Phase 1 Day 1 Call</div>
+        <div class="r-top"><div class="r-name">Jack Brewer Foundation — Heroes 2nd Chance (H2FI)</div><span class="badge-co">South Florida</span></div>
+        <div class="r-desc">Most comprehensive faith-based reentry program in South Florida per the manual. Job placement + case management + mentorship + housing navigation + employer partners committed to fair-chance hiring. Fatherhood Initiative available.</div>
+        <div class="r-law">Manual: Phase 1 II-E · Phase 2 III-C · Pillar II · Key Phone Numbers</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18669556267" onclick="app.link(event,this)">📞 1-866-955-6267</a>
+          <a class="wl" href="https://jackbrewerfoundation.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 jackbrewerfoundation.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'jack-brewer')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Case manager name, appointment date, program enrolled…" data-id="jack-brewer"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="duval hillsborough orange" data-category="employment">
+        <div class="badge-rec">📖 MANUAL KEY — Phase 2 Employment</div>
+        <div class="r-top"><div class="r-name">Operation New Hope — Ready4Work</div><span class="badge-co">Jacksonville · Tampa · Orlando</span></div>
+        <div class="r-desc">Ready4Work: job training and placement for returning citizens. Three Florida regional offices. Manual Key Phone Number — directly listed.</div>
+        <div class="r-law">Manual: Key Phone Numbers · Phase 2 III-C · Pillar II</div>
+        <div class="r-links">
+          <a class="tl" href="tel:9043544673" onclick="app.link(event,this)">📞 Jacksonville: 904-354-4673</a>
+          <a class="tl" href="tel:8133600280" onclick="app.link(event,this)">📞 Tampa: 813-360-0280</a>
+          <a class="tl" href="tel:3212344782" onclick="app.link(event,this)">📞 Orlando: 321-234-4782</a>
+          <a class="wl" href="https://operationnewhope.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 Website</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'op-new-hope')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Office, coordinator name, program start date…" data-id="op-new-hope"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="employment">
+        <div class="r-top"><div class="r-name">CareerSource Florida — Request the Fair Chance Coordinator</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Every CareerSource center has a dedicated Fair Chance/reentry coordinator — not a general counselor. A specific person whose job is connecting people with records to employers actively recruiting. Request them by name. Also satisfies the 30-Hour Job Search documentation requirement.</div>
+        <div class="r-law">Manual: Phase 2 III-C · 30-Hour Rule · Fla. Stat. § 948.03(1)(c)</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18664387545" onclick="app.link(event,this)">📞 1-866-438-7545</a>
+          <a class="wl" href="https://floridajobs.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 floridajobs.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'careersource')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Coordinator name, office location, appointment date…" data-id="careersource"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="employment">
+        <div class="r-top"><div class="r-name">Vocational Rehabilitation — Funded Training & Certifications</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">State-funded vocational training, tools, certifications, job placement. Manual Key Phone Number. Can fund trade certifications. Apply early — waiting list possible. Pillar II resource.</div>
+        <div class="r-law">Manual: Phase 2 III-D · Key Phone Numbers · Pillar II</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18004514327" onclick="app.link(event,this)">📞 1-800-451-4327</a>
+          <a class="wl" href="https://rehabworks.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 rehabworks.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'voc-rehab')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Counselor name, eligibility status, funded program…" data-id="voc-rehab"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="broward miami-dade" data-category="employment">
+        <div class="r-top"><div class="r-name">Goodwill South Florida — Reentry Job Program</div><span class="badge-co">South Florida</span></div>
+        <div class="r-desc">Job training, resume workshops, and placement specifically for individuals with criminal records. Free services. Strong employer network in South Florida.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:3055891200" onclick="app.link(event,this)">📞 305-589-1200</a>
+          <a class="wl" href="https://goodwillsf.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 goodwillsf.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'goodwill-sf')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="goodwill-sf"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="employment">
+        <div class="badge-rec">💡 USE THIS IN EVERY INTERVIEW</div>
+        <div class="r-top"><div class="r-name">Work Opportunity Tax Credit (WOTC) — Your Advantage</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">Employers get $1,200–$9,600 federal tax credit per qualified returning citizen hired. Manual: "Chance is not a liability. He is a financial incentive." Mention WOTC by name in every application and interview. Appendix C of the manual includes an Employer Introduction Letter — use it.</div>
+        <div class="r-law">Manual: Phase 2 III-C · Appendix C · Pillar II</div>
+        <div class="r-links">
+          <a class="wl" href="https://www.dol.gov/agencies/eta/wotc" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 WOTC Info (DOL.gov)</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'wotc')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Employers who have WOTC, interviews scheduled…" data-id="wotc"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOUSING -->
+  <div class="res-section" data-category="housing">
+    <div class="res-hdr t-housing" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">🏠</span><span class="res-title">HOUSING & SHELTER</span><span class="res-count">5</span></div>
+      <span class="res-chev">▼</span>
+    </div>
+    <div class="res-body">
+      <div class="r-card" data-county="broward" data-category="housing">
+        <div class="r-top"><div class="r-name">Broward Partnership for the Homeless</div><span class="badge-co">Broward</span></div>
+        <div class="r-desc">Emergency shelter, transitional and permanent supportive housing. Case managers on site. Key Broward resource for returning citizens.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:9547309000" onclick="app.link(event,this)">📞 954-730-9000</a>
+          <a class="wl" href="https://browardpartnership.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 browardpartnership.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'broward-partner')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Case manager, address approved by P.O., move-in date…" data-id="broward-partner"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="broward miami-dade" data-category="housing">
+        <div class="r-top"><div class="r-name">Volunteers of America SE Florida</div><span class="badge-co">Broward · Miami-Dade</span></div>
+        <div class="r-desc">Transitional housing and supportive services specifically for returning citizens. Comprehensive reentry-focused support throughout South Florida.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:9544853499" onclick="app.link(event,this)">📞 954-485-3499</a>
+          <a class="wl" href="https://www.voasfl.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 voasfl.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'voa-sefl')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="voa-sefl"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="miami-dade" data-category="housing">
+        <div class="badge-rec">📖 MANUAL LISTED — Phase 2 Housing</div>
+        <div class="r-top"><div class="r-name">Exodus Place — Transitional Housing</div><span class="badge-co">Miami-Dade</span></div>
+        <div class="r-desc">30–90 day transitional housing with wraparound services including mental health support and case management. Know the rules: no unauthorized firearms (Fla. Stat. § 790.23), all visitors through P.O. approval.</div>
+        <div class="r-law">Manual: Phase 2 III-E · Fla. Stat. § 948.03(1)(i) · § 790.23</div>
+        <div class="r-links"><a class="tl" href="tel:3056358953" onclick="app.link(event,this)">📞 305-635-8953</a></div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'exodus-place')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="exodus-place"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="palm-beach" data-category="housing">
+        <div class="r-top"><div class="r-name">The Lord's Place</div><span class="badge-co">Palm Beach</span></div>
+        <div class="r-desc">Comprehensive reentry housing and job training in West Palm Beach. One of Florida's most respected second-chance providers. Long-term stability focus.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:5619448800" onclick="app.link(event,this)">📞 561-944-8800</a>
+          <a class="wl" href="https://thelordsplace.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 thelordsplace.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'lords-place')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="lords-place"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="housing">
+        <div class="badge-rec">📖 MANUAL — Phase 2 Banking: Cash is liability, digital is leverage</div>
+        <div class="r-top"><div class="r-name">Bank On — Second Chance Banking</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">Can't open an account due to ChexSystems? Bank On connects you to certified banks/credit unions with no ChexSystems screening. Get direct deposit — it's proof of employment for your P.O. and builds credit. Fintech first (Chime, Varo, SoFi — Day 1). BankOn-certified bank Month 3+.</div>
+        <div class="r-law">Manual: Phase 2 III-A · Direct Deposit as P.O. Proof · Fla. Stat. § 948.03</div>
+        <div class="r-links"><a class="wl" href="https://joinbankon.org/accounts" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 Find an Account</a></div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'bank-on')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Account opened, bank name, routing/account (last 4 only)…" data-id="bank-on"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEGAL -->
+  <div class="res-section" data-category="legal">
+    <div class="res-hdr t-legal" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">⚖️</span><span class="res-title">LEGAL AID & RIGHTS RESTORATION</span><span class="res-count">6</span></div>
+      <span class="res-chev">▼</span>
+    </div>
+    <div class="res-body">
+      <div class="r-card" data-county="all" data-category="legal">
+        <div class="badge-rec">📖 MANUAL KEY — Phase 4 Voting & LFO Assistance</div>
+        <div class="r-top"><div class="r-name">Florida Rights Restoration Coalition (FRRC)</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Amendment 4 voting rights experts. LFO assistance to clear financial obligations blocking voting eligibility. Safe Harbor guidance. Free legal clinics. Manual Key Phone Number for Phase 4 voting restoration and clemency strategy.</div>
+        <div class="r-law">Manual: Phase 4-A · Amendment 4 · Key Phone Numbers · LFO Trap Strategy</div>
+        <div class="r-links">
+          <a class="tl" href="tel:4079013749" onclick="app.link(event,this)">📞 407-901-3749</a>
+          <a class="wl" href="https://floridarrc.com" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 floridarrc.com</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'frrc')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="LFO balance, voting eligibility status, Safe Harbor letter requested…" data-id="frrc"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="legal">
+        <div class="badge-rec">📖 MANUAL KEY — Phase 3 Pro Se & Phase 4 Clemency</div>
+        <div class="r-top"><div class="r-name">Florida Justice Center</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Pro bono clemency petitions, license reinstatement, sealing/expungement help. Manual recommends for early termination support and RCR applications. First listed organization in manual's legal resource table.</div>
+        <div class="r-law">Manual: Key Phone Numbers · Phase 3 IV-B · Phase 4 Clemency</div>
+        <div class="r-links">
+          <a class="tl" href="tel:9547587555" onclick="app.link(event,this)">📞 954-758-7555</a>
+          <a class="wl" href="https://floridajusticecenter.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 floridajusticecenter.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'fl-justice-ctr')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Attorney name, case status, filing dates…" data-id="fl-justice-ctr"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="legal">
+        <div class="badge-rec">📖 MANUAL — Phase 4 Clemency Marathon</div>
+        <div class="r-top"><div class="r-name">FL Board of Executive Clemency (FCOR)</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">RCR applications, pardons, firearm authority restoration. 5–7 year wait begins from end of supervision. Manual is clear: start building the Clemency Binder TODAY regardless of where you are. What you document now is what the Governor sees in 5–7 years.</div>
+        <div class="r-law">Manual: Phase 4-B · Florida Rules of Executive Clemency · Pillar V</div>
+        <div class="r-links">
+          <a class="tl" href="tel:8504882952" onclick="app.link(event,this)">📞 850-488-2952</a>
+          <a class="wl" href="https://www.fcor.state.fl.us" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 fcor.state.fl.us</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'fl-clemency')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="RCR application date, case number, binder status…" data-id="fl-clemency"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="legal">
+        <div class="badge-rec">⚠️ GET THIS LETTER BEFORE REGISTERING TO VOTE</div>
+        <div class="r-top"><div class="r-name">FL Division of Elections — Safe Harbor Opinion</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Request a written Safe Harbor Advisory Opinion BEFORE registering to vote. Protects you from prosecution if LFO status is uncertain. Manual warning: "$1 owed = still ineligible under Amendment 4." Get the letter first. Every time.</div>
+        <div class="r-law">Manual: Phase 4-A · Art. VI, § 4, Fla. Const. · Amendment 4 · "The LFO Trap"</div>
+        <div class="r-links">
+          <a class="tl" href="tel:8502456200" onclick="app.link(event,this)">📞 850-245-6200</a>
+          <a class="wl" href="https://dos.fl.gov/elections" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 dos.fl.gov/elections</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'fl-div-elections')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Safe Harbor letter requested date, response received, eligibility confirmed…" data-id="fl-div-elections"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="broward" data-category="legal">
+        <div class="r-top"><div class="r-name">Legal Aid Service of Broward County</div><span class="badge-co">Broward</span></div>
+        <div class="r-desc">Free civil legal services for low-income Broward residents. Expungements, housing disputes, family law, benefits appeals. In-person offices in Fort Lauderdale.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:9547654700" onclick="app.link(event,this)">📞 954-765-4700</a>
+          <a class="wl" href="https://legalaidbroward.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 legalaidbroward.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'legal-aid-broward')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Notes…" data-id="legal-aid-broward"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="legal">
+        <div class="badge-rec">📖 MANUAL KEY — Phase 2 Safety Net · SSI/SSDI</div>
+        <div class="r-top"><div class="r-name">Disability Rights Florida — SSI/SSDI Navigation</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">SSI/SSDI reinstatement help and disability civil rights advocacy. Manual Key Phone Number. Benefits can be reinstated on release — you may be owed back payments. Don't wait.</div>
+        <div class="r-law">Manual: Key Phone Numbers · Phase 2 III-D · Pillar II</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18003420823" onclick="app.link(event,this)">📞 1-800-342-0823</a>
+          <a class="wl" href="https://disabilityrightsflorida.org" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 disabilityrightsflorida.org</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'disability-rights-fl')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Claim number, eligibility status, appointment…" data-id="disability-rights-fl"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <div class="res-section" data-category="benefits">
+    <div class="res-hdr t-benefits" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">💰</span><span class="res-title">BENEFITS & FINANCIAL</span><span class="res-count">4</span></div>
+      <span class="res-chev">▼</span>
+    </div>
+    <div class="res-body">
+      <div class="r-card" data-county="all" data-category="benefits">
+        <div class="badge-rec">📖 MANUAL — Day 1 Priority · Key Phone Numbers</div>
+        <div class="r-top"><div class="r-name">ACCESS Florida — SNAP / Medicaid</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Apply for SNAP and Medicaid upon release. Manual explicitly calls this a Day 1 action. You are eligible. Apply before the first P.O. visit if possible. 1-866-762-2237.</div>
+        <div class="r-law">Manual: Key Phone Numbers · Phase 2 III-D · Pillar II Safety Net</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18667622237" onclick="app.link(event,this)">📞 1-866-762-2237</a>
+          <a class="wl" href="https://www.myflorida.com/accessflorida" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 Apply Online</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'access-fl')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Application date, EBT card number, SNAP balance, Medicaid card…" data-id="access-fl"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="benefits">
+        <div class="badge-rec">⚠️ CRITICAL 2026 UPDATE — Use Form DC2-364 Only</div>
+        <div class="r-top"><div class="r-name">CorrectPay / COPS — Court Ordered Payment System</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Pay supervision fees and court-ordered obligations here. CRITICAL: The manual's 2026 Update states Form DC2-364 replaced DC2-350. Using the old form = suspense account = missed payment on record = potential VOP. Always confirm current form before mailing.</div>
+        <div class="r-law">Manual: Phase 2 III-B · 2026 Form Update · Fla. Stat. § 948.09 · Pillar III</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18663522345" onclick="app.link(event,this)">📞 1-866-352-2345</a>
+          <a class="wl" href="https://www.correctpay.com" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 CorrectPay Portal</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'correctpay')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="DC#, total balance, payment plan amount, confirmation numbers, payment dates…" data-id="correctpay"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="benefits">
+        <div class="r-top"><div class="r-name">Social Security Administration — Benefits Reinstatement</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">SSI/SSDI benefits can resume or be reinstated on release. You may be owed back payments. Call to reinstate prior benefits immediately. Disability Rights Florida can navigate the process with you.</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18007721213" onclick="app.link(event,this)">📞 1-800-772-1213</a>
+          <a class="wl" href="https://www.ssa.gov/myaccount" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 my Social Security</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'ssa')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Claim number, appointment, back payment status…" data-id="ssa"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="benefits">
+        <div class="r-top"><div class="r-name">Federal Pell Grant — Restored to Returning Citizens (2023)</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">As of 2023, returning citizens are again eligible for Pell Grants — up to $7,395/year for college. Complete FAFSA immediately. Florida's state colleges cannot deny admission solely on conviction basis.</div>
+        <div class="r-links"><a class="wl" href="https://studentaid.gov" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 studentaid.gov (FAFSA)</a></div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'pell-grant')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="FAFSA submission date, EFC, school enrolled…" data-id="pell-grant"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ID & DOCS -->
+  <div class="res-section" data-category="id">
+    <div class="res-hdr t-id" onclick="toggleSection(this)">
+      <div class="res-left"><span class="res-icon">🪪</span><span class="res-title">ID & VITAL DOCUMENTS</span><span class="res-count">3</span></div>
+      <span class="res-chev">▼</span>
+    </div>
+    <div class="res-body">
+      <div class="r-card" data-county="all" data-category="id">
+        <div class="badge-rec">📖 MANUAL — Step 1 of Three-Step ID Recovery Sequence</div>
+        <div class="r-top"><div class="r-name">Birth Certificate — Florida Vital Statistics</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Do this FIRST. You need your birth certificate to get your SSN card, which you need to get your State ID. $9 online. Express options available. This single document unlocks the entire chain.</div>
+        <div class="r-law">Manual: Phase 1 Section II-D · ID Recovery Sequence Step 1</div>
+        <div class="r-links">
+          <a class="tl" href="tel:8504101187" onclick="app.link(event,this)">📞 850-410-1187</a>
+          <a class="wl" href="https://www.floridahealth.gov/certificates" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 Order Online — $9</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'birth-cert')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Order confirmation number, expected delivery date…" data-id="birth-cert"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="id">
+        <div class="badge-rec">📖 MANUAL — Step 2 of Three-Step ID Recovery Sequence</div>
+        <div class="r-top"><div class="r-name">Social Security Card Replacement (SSA)</div><span class="badge-co">Nationwide</span></div>
+        <div class="r-desc">Step 2 — do this after getting your birth certificate. Free at SSA office or online. 3 replacements/year, 10 per lifetime. Bring birth certificate. Can combine with SSI/SSDI reinstatement visit.</div>
+        <div class="r-law">Manual: Phase 1 Section II-D · ID Recovery Sequence Step 2</div>
+        <div class="r-links">
+          <a class="tl" href="tel:18007721213" onclick="app.link(event,this)">📞 1-800-772-1213</a>
+          <a class="wl" href="https://www.ssa.gov/myaccount" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 Apply Online — Free</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'ss-card')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="Office visited, card received date…" data-id="ss-card"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+      <div class="r-card" data-county="all" data-category="id">
+        <div class="badge-rec">📖 MANUAL — Step 3 of Three-Step ID Recovery Sequence</div>
+        <div class="r-top"><div class="r-name">FLHSMV — Florida State ID / Driver's License</div><span class="badge-co">Statewide</span></div>
+        <div class="r-desc">Step 3 — the final piece. Bring birth certificate + SSN card + proof of address. Reduced fee available for low-income. This unlocks employment applications, banking, and housing. Do not skip.</div>
+        <div class="r-law">Manual: Phase 1 Section II-D · ID Recovery Sequence Step 3 · Pillar I Administrative Mastery</div>
+        <div class="r-links">
+          <a class="tl" href="tel:8506174000" onclick="app.link(event,this)">📞 850-617-4000</a>
+          <a class="wl" href="https://www.flhsmv.gov" target="_blank" rel="noopener" onclick="app.link(event,this)">🌐 flhsmv.gov</a>
+        </div>
+        <div class="r-actions"><button class="btn-log" onclick="app.toggleContact(this,'flhsmv')">✔ Log Contact</button><button class="btn-notes" onclick="app.toggleNotes(this)">📝 Notes</button></div>
+        <div class="note-area"><textarea class="note-ta" placeholder="ID number, expiration date, DMV office visited…" data-id="flhsmv"></textarea><div class="note-saved">✓ Saved</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-resources -->
+
+<!-- ═══ JOURNAL ═══ -->
+<div class="tab-panel" id="tab-journal">
+  <div class="j-wrap">
+    <div class="j-title">📝 My Reentry Journal</div>
+    <div class="j-prompt-label" id="promptLabel">Today's Reflection</div>
+    <div class="j-prompt-text" id="promptText"></div>
+    <textarea class="j-ta" id="journalInput" placeholder="Write your thoughts here…"></textarea>
+    <button class="btn-save" onclick="app.saveEntry()">💾 Save Entry</button>
+  </div>
+  <div class="j-wrap">
+    <div class="j-title" style="font-size:16px">📚 Past Entries</div>
+    <div id="journalEntries"><p style="font-size:12px;color:var(--text-dim)">No entries yet. Write your first one above.</p></div>
+  </div>
+</div>
+
+<!-- ═══ LOG ═══ -->
+<div class="tab-panel" id="tab-log">
+  <div class="log-wrap">
+    <div class="log-title">📊 Activity Log</div>
+    <div id="logContent"><p style="font-size:12px;color:var(--text-dim)">No contacts logged yet. Go to Resources and start tracking!</p></div>
+    <div class="log-actions">
+      <button class="btn-export" onclick="app.exportData()">📤 Export Progress</button>
+      <button class="btn-danger" onclick="app.confirmReset()">🗑 Reset All Data</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- FAB -->
+<div class="fab-cluster">
+  <button class="fab fab-teal" onclick="switchTab('log');scrollTo(0,0)" title="Log">📊</button>
+  <button class="fab fab-gold" onclick="window.print()" title="Print">📄</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap"><div class="toast" id="toast"></div></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA — DIRECT FROM SECOND CHANCE MANUAL V2026.1
+// ══════════════════════════════════════════════════
+const PHASES = {
+  p1_critical:[
+    {id:'p1-sheriff',    label:'Register with County Sheriff — FIRST STOP',       detail:'Within 48 hours of release. No detours. Not to the restaurant, not to mom\'s house. Call ahead to confirm registration desk location and hours. Bring all release documents.',  law:'Fla. Stat. § 775.13',                      pri:'critical'},
+    {id:'p1-county-x',  label:'Register in EVERY County You Enter',               detail:'The 48-hour clock RESETS at every county line. Staying the night in Broward after releasing from Miami-Dade? Register with the Broward Sheriff too. No exceptions.',               law:'Fla. Stat. § 775.13',                      pri:'critical'},
+    {id:'p1-drug',      label:'Stay Clean — Drug Test May Be Immediate',           detail:'The test at your first P.O. meeting does not distinguish between before and after release. It tests for presence. A positive test on Day 1 ends the journey before it begins.',     law:'Fla. Stat. § 948.03 · Zero Tolerance',     pri:'critical'},
+    {id:'p1-po',        label:'Report to Probation Office — Arrive Early',         detail:'Within 24–72 hours. Dress appropriately. Arrive early. Bring ALL release documents. Ask for written confirmation of every condition you sign. Know your P.O.\'s name and number.',law:'Fla. Stat. § 948.03',                      pri:'critical'},
+  ],
+  p1_docs:[
+    {id:'p1-conditions',label:'Get Standard Conditions of Supervision in Writing', detail:'Ask your P.O. to clarify anything unclear. If in doubt about an association or location — ask P.O. first, get the answer in writing. Never assume.',                             law:'Fla. Stat. § 948.03 · Standard Conditions', pri:'high'},
+    {id:'p1-birth',     label:'Order Birth Certificate — Step 1 of ID Sequence',  detail:'$9 at floridahealth.gov/certificates. This is the foundation — without it, you cannot get your SSN card. Without the SSN card, you cannot get your State ID. Do it today.',      law:'Phase 1 Section II-D · ID Recovery Sequence',pri:'high'},
+    {id:'p1-ssn',       label:'Replace Social Security Card — Step 2 of ID',      detail:'Free at SSA office (ssa.gov or call 1-800-772-1213). Bring birth certificate. 3 replacements per year allowed. Must have before going to FLHSMV.',                               law:'Phase 1 Section II-D · SSA',                pri:'high'},
+    {id:'p1-stateid',   label:'Get Florida State ID / Driver\'s License — Step 3', detail:'Bring birth certificate + SSN card + proof of address. Reduced fee for low-income. This document unlocks employment, banking, and housing. Do not skip this step.',               law:'FLHSMV · Phase 1 II-D · Pillar I',          pri:'high'},
+  ],
+  p1_support:[
+    {id:'p1-jack-b',    label:'Call Jack Brewer Foundation — Day 1',              detail:'1-866-955-6267. Heroes 2nd Chance program: job placement + mentorship + housing + spiritual grounding. Manual says call Day 1, before hunger or desperation forces the call.',      law:'Phase 1 II-E · Key Phone Numbers · Pillar II',pri:'high'},
+    {id:'p1-geo',       label:'Check GEO Continuum of Care (if applicable)',       detail:'If you were housed in a GEO Group facility, COC provides pre- and post-release transition services — housing, employment, substance abuse treatment, community connection.',         law:'Phase 1 Section II-E',                      pri:'standard'},
+    {id:'p1-coalition', label:'Connect with Local Reentry Coalition',              detail:'Ask at the probation office or Sheriff\'s desk for referrals to local coalitions. Major FL metros have coordinated networks. Connect before you need them, not after.',              law:'Phase 1 Section II-E',                      pri:'standard'},
+    {id:'p1-family',    label:'Brief Your Family: The Watchman Protocol',          detail:'Give family their roles: Transportation officer (substance-free transport), Witness (present for P.O. appointments if possible), Emergency contact protocol established today.',    law:'Phase 1 Section II-F · Family Watchman',    pri:'standard'},
+  ],
+  p2_finance:[
+    {id:'p2-clerk',     label:'Pull Full Balance from Clerk of Court Portal',      detail:'Look at the FULL number across EVERY county. Miami-Dade: mdcclerk.com. Broward: browardclerk.org. Write the number down. Do not soften it. The Bona Fide Effort Defense starts here.',law:'Fla. Stat. § 948.09 · Phase 2 II-B',         pri:'critical'},
+    {id:'p2-plan',      label:'Set Up Formal Court Payment Plan',                  detail:'The Clerk is REQUIRED to offer a payment plan. Minimum payments as low as $25/month. Non-payment alone cannot suspend your license without notice. Set it up. Automate it.',        law:'Fla. Stat. § 28.246 · Pillar III',          pri:'critical'},
+    {id:'p2-correctpay',label:'Set Up CorrectPay — USE FORM DC2-364 (2026)',       detail:'CRITICAL: Use Form DC2-364, NOT the old DC2-350. Old form = suspense account = missed payment on record = potential VOP. Have your DC number ready. Keep every confirmation.',    law:'Phase 2 · 2026 Form Update · Fla. Stat. § 948.09',pri:'critical'},
+    {id:'p2-bank',      label:'Open Bank Account — Chime/Varo/SoFi First',        detail:'Cash is a liability. Direct deposit is P.O. proof of employment and builds credit. Fintech first (Day 1–30): Chime, Varo, SoFi — no ChexSystems. BankOn-certified bank at Month 3+.',law:'Phase 2 III-A · Fla. Stat. § 948.03 · Pillar III',pri:'high'},
+    {id:'p2-budget',    label:'Complete Monthly Budget & Hardship Worksheet',      detail:'Appendix B of the manual. Document all income and expenses from Day 1. This is Exhibit B if you file a Motion to Modify Restitution. Build the paper trail immediately.',          law:'App. B · Fla. Stat. § 775.089 · Pillar III',pri:'high'},
+  ],
+  p2_employ:[
+    {id:'p2-careersrc', label:'Call CareerSource — Request Fair Chance Coordinator',detail:'Ask specifically for the reentry/Fair Chance coordinator — not a general counselor. This dedicated role connects people with records to employers actively recruiting.',            law:'Phase 2 III-C · 30-Hour Rule · Fla. Stat. § 948.03(1)(c)',pri:'critical'},
+    {id:'p2-jbf2',      label:'Enroll in Jack Brewer H2FI Employment Program',    detail:'Most comprehensive faith-based reentry employment in South Florida. Job placement + case management + mentorship + employer network committed to fair-chance hiring.',               law:'Phase 2 III-C · Pillar II',                 pri:'critical'},
+    {id:'p2-joblog',    label:'Start 30-Hour Job Search Log — NOW',               detail:'Standard Condition requires you work faithfully OR actively job search. If not yet employed, document 30+ hours/week of searching. This log is your legal shield against a VOP allegation.',law:'Fla. Stat. § 948.03(1)(c) · Phase 2 III-C',pri:'critical'},
+    {id:'p2-wotc',      label:'Learn to Pitch WOTC as Your Competitive Advantage', detail:'"Chance is not a liability. He is a financial incentive." — Manual. Employers get $1,200–$9,600 tax credit for hiring you. Mention WOTC by name in every interview. Use Appendix C letter.',law:'Phase 2 III-C · Appendix C · WOTC',         pri:'high'},
+    {id:'p2-112',       label:'Know Fla. Stat. § 112.011 — Challenge Blanket Denials',detail:'Most FL employers/licensing boards CANNOT automatically reject you solely for a felony. The offense must be directly related to the position. This is the lever. Use it.',     law:'Fla. Stat. § 112.011 · Pillar II',          pri:'high'},
+    {id:'p2-vocrehab',  label:'Apply for Vocational Rehabilitation',              detail:'State-funded training, tools, certifications, and placement. No cost to you. Can fund trade certs. Apply early — waiting list is possible.',                                        law:'Phase 2 III-D · Key Phone Numbers · Pillar II',pri:'standard'},
+  ],
+  p2_housing:[
+    {id:'p2-housing',   label:'Secure P.O.-Approved Stable Housing',              detail:'Contact 211 or local coalition for immediate housing. Know the rules: no unauthorized firearms (§ 790.23), no unauthorized alcohol, all visitors through P.O. approval first.',      law:'Fla. Stat. § 948.03(1)(i) · § 790.23 · Phase 2 III-E',pri:'critical'},
+    {id:'p2-address',   label:'Confirm Every Address Change with P.O. in Writing', detail:'Moving without P.O. permission is a technical VOP. Get approval in writing BEFORE you move, not after. Text messages count if your P.O. responds.',                                law:'Fla. Stat. § 948.03 · Standard Conditions', pri:'critical'},
+    {id:'p2-lease',     label:'Set Long-Term Goal: Lease in Your Own Name',       detail:'Arc: Month 1–3: establish residency. Month 3–6: build credit with BankOn account. Month 6–12: work toward lease eligibility. Phase 2 plants the seed Phase 3 harvests.',           law:'Phase 2 III-E · Phase 3 Housing Arc',        pri:'standard'},
+  ],
+  p2_benefits:[
+    {id:'p2-snap',      label:'Apply for SNAP & Medicaid — ACCESS Florida NOW',   detail:'Apply immediately — before the first P.O. visit if possible. You are eligible. Call 1-866-762-2237 or go to myflorida.com/accessflorida. Bring ID and release documents.',          law:'Phase 2 III-D · Key Phone Numbers · Manual Day 1',pri:'critical'},
+    {id:'p2-ssi',       label:'Contact SSA & Disability Rights FL for SSI Reinstatement',detail:'If you had SSI/SSDI before incarceration, benefits can be reinstated on release. You may be owed back payments. Call Disability Rights Florida (1-800-342-0823) to navigate.',law:'Phase 2 III-D · Key Phone Numbers',          pri:'high'},
+    {id:'p2-phone',     label:'Get a Phone — Lifeline Free Service',              detail:'Your P.O. must be able to reach you. Employers must be able to call back. Lifeline provides free phones for qualifying individuals. This is not optional.',                          law:'Phase 1–2 Operational Requirement',          pri:'high'},
+    {id:'p2-pell',      label:'Apply for Pell Grant if Enrolling in School',      detail:'Pell Grants restored to returning citizens in 2023 — up to $7,395/year. FAFSA at studentaid.gov. FL state colleges cannot deny admission solely on conviction basis.',               law:'2023 FAFSA Restoration · Phase 2 Education', pri:'standard'},
+  ],
+  p3_evidence:[
+    {id:'p3-log',       label:'Complete 90-Day Compliance & Victory Log',          detail:'Appendix A of the manual. Mirror of FL Form DC3-2026. Monthly supervision & financial tracker, job search log, rehabilitation evidence log. Keep it current — always ready to present.',law:'App. A · Phase 3 IV-A · Mirror of DC3-2026',pri:'critical'},
+    {id:'p3-evidence',  label:'Assemble Your Evidence Box',                        detail:'Payment receipts, P.O. meeting records, employer contacts, certificates, community service hours, pay stubs — in date order. The box speaks before you say a single word.',            law:'Phase 3 IV-A · Bona Fide Effort Doctrine',  pri:'critical'},
+    {id:'p3-receipts',  label:'Organize All CorrectPay & Supervision Receipts',    detail:'Every money order stub, every CorrectPay confirmation, every supervision fee receipt — in date order, nothing discarded. This is your financial defense against any VOP allegation.',law:'Binder Tab 8 · Phase 3 IV-A',               pri:'critical'},
+    {id:'p3-audit',     label:'Conduct Full Special Conditions Compliance Audit',  detail:'Go through every condition on your supervision order one by one. Identify any you\'ve struggled with and document your efforts. Gaps in compliance must be addressed before filing.',  law:'Phase 3 IV-A · Standard Conditions',         pri:'high'},
+  ],
+  p3_legal:[
+    {id:'p3-50pct',     label:'Calculate Your 50% Mark for Early Termination',    detail:'Petition rights begin at 50% of probation term AND completion of all Special Conditions. Calculate the exact date now. This is a statutory entitlement — not a favor from the judge.',law:'Fla. Stat. § 948.04 · Phase 3 IV-B',         pri:'critical'},
+    {id:'p3-po-check',  label:'P.O. Courtesy Check — Request "No Objection" Letter',detail:'The single most powerful step in early termination. Approach your P.O. professionally with your compliance documentation. A "No Objection" letter dramatically increases court approval.',law:'Phase 3 IV-B · P.O. Strategy',              pri:'critical'},
+    {id:'p3-motion',    label:'Draft Pro Se Motion for Early Termination',         detail:'Use the template in the manual. File before Day 90 if 50% mark is approaching. Organized, tabbed, with evidence box attached. Judges respond to documentation, not arguments alone.',law:'Fla. Stat. § 948.04 · App. Template · Phase 3',pri:'high'},
+    {id:'p3-admin',     label:'Know the Administrative Probation Backup Plan',     detail:'If full termination is denied, push for Administrative Probation: no fees, no drug tests, no P.O. meetings. This is the strategic backup. Always be prepared to ask for it.',         law:'Fla. Stat. § 948.012 · Phase 3 IV-C',       pri:'high'},
+  ],
+  p3_modify:[
+    {id:'p3-curfew',    label:'Evaluate Curfew & Travel Restriction Modification', detail:'If curfews or travel restrictions interfere with employment, file a Motion to Modify under Rule 3.800. A new job or changed work schedule qualifies as changed circumstances.',        law:'Fla. R. Crim. P. 3.800 · Phase 3 IV-D',    pri:'standard'},
+    {id:'p3-restitution',label:'Evaluate Restitution Modification if Truly Unaffordable',detail:'If monthly restitution is genuinely unaffordable and documented (Appendix B budget), file a Pro Se Motion to Modify. Courts must consider financial resources and dependents.',law:'Fla. Stat. § 775.089 · Bearden v. Georgia',  pri:'standard'},
+    {id:'p3-sunday',    label:'Implement Sunday Audit Protocol (Weekly)',          detail:'Every Sunday: all conditions met? all payments made? all appointments documented? evidence box current? This is the VOP trap monitor. One missed week = one vulnerability.',           law:'Phase 3 IV-E · Family Watchman Protocol',   pri:'high'},
+  ],
+  p4_voting:[
+    {id:'p4-lfo',       label:'Verify EVERY LFO Is Cleared — "$1 Owed = Ineligible"',detail:'Amendment 4 trap: one dollar owed in legal financial obligations = still ineligible to vote. Pull the full balance from the Clerk portal in every county, every case. Zero means zero.',law:'Art. VI, § 4, Fla. Const. · Amendment 4 · LFO Trap',pri:'critical'},
+    {id:'p4-harbor',    label:'Request Safe Harbor Advisory Opinion BEFORE Registering',detail:'Write to FL Division of Elections and request a written Safe Harbor Advisory Opinion. This protects you from prosecution if eligibility is uncertain. Do this BEFORE registering.',law:'Fla. Div. Elections · Amendment 4 · Phase 4-A',pri:'critical'},
+    {id:'p4-vote',      label:'Register to Vote After Confirmation',              detail:'Once the Safe Harbor Opinion confirms eligibility and all LFOs are cleared, register. You have paid taxes into this system. Your vote is your voice in the laws that govern you.',       law:'Art. VI, § 4, Fla. Constitution · Amendment 4',pri:'high'},
+  ],
+  p4_clemency:[
+    {id:'p4-rcr-date',  label:'Record the Exact Date Your RCR Wait Period Begins', detail:'RCR wait: 5–7 years from the END of all supervision (not release date). Note the date supervision officially terminates. The clemency clock starts then — not a day before.',         law:'Florida Rules of Executive Clemency · Phase 4-B',pri:'critical'},
+    {id:'p4-binder',    label:'Start Building the Clemency Binder TODAY',          detail:'Employer letters of recommendation, community service records, school transcripts, certificates, civic participation — organized by year. What you build today is what the Governor reads in 5–7 years.',law:'Phase 4-B · The Clemency Marathon Strategy', pri:'critical'},
+    {id:'p4-rcr-app',   label:'Prepare & File RCR Application (After Wait Period)', detail:'Full Restoration of Civil Rights — jury service, public office eligibility, professional licensing restoration. Apply through FCOR after the wait period. FL Justice Center can assist.',law:'Fla. Rules of Executive Clemency · Phase 4-B',pri:'high'},
+    {id:'p4-firearm',   label:'Understand the 8-Year Firearm Authority Timeline',  detail:'If firearm authority restoration is a long-term goal, the 8-year specific authority pathway begins at end of sentence. This is separate from general RCR. Understand the distinction.',law:'Chapter 940, Fla. Stat. · Phase 4-D',        pri:'standard'},
+  ],
+  p4_longterm:[
+    {id:'p4-license',   label:'File Disqualification Exemption for Licensed Profession',detail:'For professions with background screening, apply for a Disqualification Exemption — a formal individual assessment of whether your specific offense is relevant. This is NOT automatic denial.',law:'Fla. Stat. § 435.07 · Phase 4-C · Pillar V',pri:'high'},
+    {id:'p4-expunge',   label:'Assess Expungement / Record Sealing Eligibility',   detail:'Strict but real eligibility under Florida statutes. A sealed or expunged record need not be disclosed on most job applications. FL Legal Services offers free consultations.',           law:'Fla. Stat. § 943.0585 / § 943.059',         pri:'standard'},
+    {id:'p4-goals',     label:'Write Your 1-Year Anniversary Goals',               detail:'Vision board, written plan, accountability partner. What does your 2-year and 5-year plan look like? The man who arrives at Year 1 with an evidence box speaks without saying a word.',   law:'Phase 4-E · One-Year Anniversary Checklist', pri:'standard'},
+  ],
+};
+
+const RIGHTS=[
+  {t:'Protection from Automatic Employment Disqualification', s:'Fla. Stat. § 112.011', d:'Most Florida employers and licensing boards CANNOT automatically reject you solely because of a felony conviction. The offense must be directly related to the position. This is your lever for challenging blanket denials.'},
+  {t:'Right to a Payment Plan', s:'Fla. Stat. § 28.246', d:'The Clerk of Court is REQUIRED to offer a payment plan for court-ordered financial obligations. Minimum payments can be as low as $25/month. Non-payment alone cannot suspend your license without notice and opportunity to establish a plan.'},
+  {t:'Protection Against Imprisonment for Poverty', s:'Fla. Stat. § 948.06(5) / Bearden v. Georgia (1983)', d:'A court cannot revoke probation solely because you cannot afford to pay restitution or fees. You must prove inability by clear and convincing evidence with documented bona fide efforts. Poverty is not willful non-payment.'},
+  {t:'Right to Petition for Early Termination', s:'Fla. Stat. § 948.04', d:'After completing 50% of the probation term and all Special Conditions, you have the LEGAL RIGHT to ask the court for early termination or Administrative Probation. This is not a favor — it is a statutory entitlement for compliant probationers.'},
+  {t:'Restitution Modification Authority', s:'Fla. Stat. § 775.089', d:'Courts must consider financial resources, needs, and dependent obligations when setting or modifying restitution. Changed circumstances — like post-release employment reality — are grounds for a Pro Se motion to modify.'},
+  {t:'Voting Rights Restoration', s:'Art. VI, § 4, Fla. Const. / Amendment 4 (2018)', d:'Upon completion of ALL terms including LFOs, most felons (not murder or felony sex offenses) have voting rights automatically restored. Get a Safe Harbor Advisory Opinion from the Division of Elections before registering.'},
+  {t:'Expungement / Record Sealing Eligibility', s:'Fla. Stat. § 943.0585 / § 943.059', d:'Certain convictions and arrests may be eligible for sealing or expungement. A sealed or expunged record does not need to be disclosed on most job applications. Eligibility is strict — consult Florida Legal Services.'},
+  {t:'Restoration of Civil Rights (RCR)', s:'Florida Rules of Executive Clemency', d:'After the required waiting period (5–7 years post-supervision for most non-violent offenses), you may apply for full Restoration of Civil Rights — including jury service, public office eligibility, and professional licensing restoration.'},
+  {t:'Disqualification Exemption for Licensed Professions', s:'Fla. Stat. § 435.07', d:'Even for professions with background screening requirements, you may apply for a Disqualification Exemption — a formal individual assessment of whether your specific offense is actually relevant to the specific licensed role sought.'},
+  {t:'Right to Sentence Modification', s:'Fla. R. Crim. P. 3.800', d:'You may file a motion to correct or reduce a sentence — including removing curfews, travel restrictions, or other special conditions — if circumstances have changed or the original conditions were imposed in error.'},
+];
+
+const PROMPTS=[
+  {h:'GRATITUDE',p:'What are three things you\'re grateful for today? Count the entries in your Compliance Log. That is not paperwork — it is a portrait of a man who chose, every single day, to build something the system said he couldn\'t.'},
+  {h:'THE PLAN',p:'Where do you see yourself in 1 year? Write one specific step you can take this week. The man who builds sequentially arrives at Year 1 with an evidence box that speaks for itself.'},
+  {h:'STRENGTH',p:'What challenge did you face this week and how did you handle it? Every wall has a handle if you know where to look. What handle did you find?'},
+  {h:'IDENTITY',p:'How do you define yourself beyond your record? You are more than the worst moment of your history. What values are you living today that prove that?'},
+  {h:'PROGRESS',p:'List every step forward you\'ve made since release — big and small. Don\'t minimize a single entry. This is your counter-narrative to the risk-factor label on a background check.'},
+  {h:'SECOND CHANCE ASKS',p:'"The gate opens. Not all the way. Not automatically. Not without a fight. But it opens." What door opened for you this week, even just a crack?'},
+  {h:'THE BINDER',p:'Is your evidence box current? Compliance log up to date? Every receipt in order? Write about the one organizational step you\'ll take today. Organization is not a soft skill — it\'s a legal strategy.'},
+  {h:'THE BOX',p:'Have you encountered a door that closed because of your record? Write about it — and then write about the legal lever you will use to push back. Fla. Stat. § 112.011 is the place to start.'},
+];
+
+// ══════════════════════════════════════════════════
+// APP
+// ══════════════════════════════════════════════════
+const app={
+  init(){
+    this.updateHeader();
+    this.buildChecklists();
+    this.buildRights();
+    this.loadContactState();
+    this.loadNotes();
+    this.updateAll();
+    this.setupFilters();
+    this.setPrompt();
+    this.renderEntries();
+  },
+
+  updateHeader(){
+    const now=new Date();
+    document.getElementById('headerDate').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    if(!localStorage.getItem('sc_start'))localStorage.setItem('sc_start',now.toISOString());
+    const days=Math.floor((now-new Date(localStorage.getItem('sc_start')))/86400000);
+    document.getElementById('metaDays').textContent=days;
+    document.getElementById('s-days').textContent=days;
+  },
+
+  buildChecklists(){
+    const map={
+      'cl-p1-critical':PHASES.p1_critical,'cl-p1-docs':PHASES.p1_docs,'cl-p1-support':PHASES.p1_support,
+      'cl-p2-finance':PHASES.p2_finance,'cl-p2-employ':PHASES.p2_employ,'cl-p2-housing':PHASES.p2_housing,'cl-p2-benefits':PHASES.p2_benefits,
+      'cl-p3-evidence':PHASES.p3_evidence,'cl-p3-legal':PHASES.p3_legal,'cl-p3-modify':PHASES.p3_modify,
+      'cl-p4-voting':PHASES.p4_voting,'cl-p4-clemency':PHASES.p4_clemency,'cl-p4-longterm':PHASES.p4_longterm,
+    };
+    Object.entries(map).forEach(([cid,items])=>{
+      const el=document.getElementById(cid);
+      if(!el)return;
+      items.forEach(item=>{
+        const done=localStorage.getItem('cl_'+item.id)==='1';
+        const div=document.createElement('div');
+        div.className='cl-item'+(done?' done':'');
+        div.dataset.id=item.id;
+        div.innerHTML=`<div class="cl-box">${done?'✓':''}</div><div class="cl-text"><strong>${item.label}<span class="pri pri-${item.pri}">${item.pri}</span></strong><small>${item.detail}</small><div class="cl-law">${item.law}</div></div>`;
+        div.addEventListener('click',()=>this.toggleCL(div));
+        el.appendChild(div);
+      });
+    });
+  },
+
+  toggleCL(el){
+    el.classList.toggle('done');
+    const done=el.classList.contains('done');
+    el.querySelector('.cl-box').textContent=done?'✓':'';
+    localStorage.setItem('cl_'+el.dataset.id,done?'1':'');
+    this.updateAll();
+    if(done)this.toast('✓ Task marked complete!');
+  },
+
+  buildRights(){
+    const c=document.getElementById('rightsGrid');
+    if(!c)return;
+    RIGHTS.forEach(r=>{
+      const d=document.createElement('div');
+      d.className='right-item';
+      d.innerHTML=`<div class="right-title">${r.t}</div><div class="right-statute">${r.s}</div><div class="right-desc">${r.d}</div>`;
+      c.appendChild(d);
+    });
+  },
+
+  setupFilters(){
+    document.getElementById('searchInput').addEventListener('input',()=>this.applyFilters());
+    document.getElementById('countyFilter').addEventListener('change',()=>this.applyFilters());
+    document.getElementById('catFilter').addEventListener('change',()=>this.applyFilters());
+  },
+
+  applyFilters(){
+    const q=document.getElementById('searchInput').value.toLowerCase().trim();
+    const county=document.getElementById('countyFilter').value;
+    const cat=document.getElementById('catFilter').value;
+    let vis=0;
+    document.querySelectorAll('.r-card').forEach(card=>{
+      const co=card.dataset.county||'all';
+      const ca=card.dataset.category||'';
+      const txt=card.textContent.toLowerCase();
+      const ok=(county==='all'||co==='all'||co.includes(county))&&(cat==='all'||ca.includes(cat))&&(!q||txt.includes(q));
+      card.classList.toggle('hidden',!ok);
+      if(ok)vis++;
+    });
+    document.querySelectorAll('.res-section').forEach(sec=>{
+      const v=sec.querySelectorAll('.r-card:not(.hidden)').length;
+      if(v>0){sec.style.display='';if(q||county!=='all'||cat!=='all'){sec.querySelector('.res-body').classList.add('open');sec.querySelector('.res-chev').classList.add('open');}}
+      else sec.style.display=(q||county!=='all'||cat!=='all')?'none':'';
+    });
+    document.getElementById('emptyState').classList.toggle('show',vis===0);
+  },
+
+  toggleContact(btn,id){
+    const card=btn.closest('.r-card');
+    const name=card.querySelector('.r-name').textContent.trim();
+    const logged=btn.classList.contains('done');
+    if(!logged){
+      btn.classList.add('done');btn.textContent='✅ Logged';card.classList.add('contacted');
+      this.addLog(id,name);
+      this.toast('✅ '+(name.length>26?name.substring(0,26)+'…':name)+' logged!');
+    }else{
+      btn.classList.remove('done');btn.textContent='✔ Log Contact';card.classList.remove('contacted');
+      this.removeLog(id);this.toast('↩ Removed from log');
+    }
+    this.updateAll();this.renderLog();
+  },
+
+  loadContactState(){
+    this.getLog().forEach(e=>{
+      document.querySelectorAll('.btn-log').forEach(btn=>{
+        const oc=btn.getAttribute('onclick')||'';
+        if(oc.includes("'"+e.id+"'")){
+          btn.classList.add('done');btn.textContent='✅ Logged';
+          btn.closest('.r-card')?.classList.add('contacted');
+        }
+      });
+    });
+  },
+
+  getLog(){return JSON.parse(localStorage.getItem('sc_log')||'[]')},
+  addLog(id,name){const l=this.getLog();if(!l.find(e=>e.id===id)){l.push({id,name,time:new Date().toISOString()});localStorage.setItem('sc_log',JSON.stringify(l))}},
+  removeLog(id){localStorage.setItem('sc_log',JSON.stringify(this.getLog().filter(e=>e.id!==id)))},
+
+  toggleNotes(btn){
+    const card=btn.closest('.r-card');
+    const area=card.querySelector('.note-area');
+    area.classList.toggle('open');
+    btn.textContent=area.classList.contains('open')?'🔼 Hide':'📝 Notes';
+    if(area.classList.contains('open'))area.querySelector('.note-ta').focus();
+  },
+
+  loadNotes(){
+    document.querySelectorAll('.note-ta').forEach(ta=>{
+      const s=localStorage.getItem('scn_'+ta.dataset.id);
+      if(s)ta.value=s;
+      ta.addEventListener('input',()=>{
+        localStorage.setItem('scn_'+ta.dataset.id,ta.value);
+        const ind=ta.nextElementSibling;
+        if(ind){ind.classList.add('show');clearTimeout(ta._t);ta._t=setTimeout(()=>ind.classList.remove('show'),1600);}
+      });
+    });
+  },
+
+  link(e,a){
+    const href=a.getAttribute('href')||'';
+    if(href.startsWith('tel:')){this.toast('📞 Opening phone dialer…');return;}
+    if(href.startsWith('http')){e.preventDefault();this.toast('🌐 Opening website…');window.open(href,'_blank','noopener,noreferrer');}
+  },
+
+  countTasks(p){
+    let total=0,done=0;
+    Object.entries(PHASES).filter(([k])=>k.startsWith('p'+p+'_')).forEach(([,items])=>{
+      items.forEach(item=>{total++;if(localStorage.getItem('cl_'+item.id)==='1')done++;});
+    });
+    return{total,done};
+  },
+
+  updateAll(){
+    [1,2,3,4].forEach(p=>{
+      const{total,done}=this.countTasks(p);
+      const pct=total>0?Math.round((done/total)*100):0;
+      document.getElementById('ph'+p+'pct').textContent=pct+'%';
+      document.getElementById('ph'+p+'bar').style.width=pct+'%';
+    });
+    const total=document.querySelectorAll('.r-card').length;
+    const contacted=this.getLog().length;
+    const allTasks=Object.values(PHASES).flat();
+    const tasksDone=allTasks.filter(i=>localStorage.getItem('cl_'+i.id)==='1').length;
+    const pct=Math.round(((contacted+tasksDone)/(total+allTasks.length))*100)||0;
+    document.getElementById('globalFill').style.width=pct+'%';
+    document.getElementById('globalPct').textContent=pct+'%';
+    document.querySelectorAll('.ms').forEach(m=>m.classList.toggle('hit',pct>=parseInt(m.dataset.ms)));
+    document.getElementById('s-contacted').textContent=contacted;
+    document.getElementById('s-tasks').textContent=tasksDone;
+    document.getElementById('s-total').textContent=total;
+    const j=JSON.parse(localStorage.getItem('sc_journal')||'[]');
+    document.getElementById('s-journal').textContent=j.length;
+  },
+
+  setPrompt(){
+    const d=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000);
+    const p=PROMPTS[d%PROMPTS.length];
+    document.getElementById('promptLabel').textContent=p.h;
+    document.getElementById('promptText').textContent=p.p;
+  },
+
+  saveEntry(){
+    const txt=document.getElementById('journalInput').value.trim();
+    if(!txt){this.toast('Write something first!');return;}
+    const e=JSON.parse(localStorage.getItem('sc_journal')||'[]');
+    e.unshift({text:txt,time:new Date().toISOString()});
+    localStorage.setItem('sc_journal',JSON.stringify(e));
+    document.getElementById('journalInput').value='';
+    this.renderEntries();this.updateAll();this.toast('📝 Entry saved!');
+  },
+
+  renderEntries(){
+    const c=document.getElementById('journalEntries');if(!c)return;
+    const e=JSON.parse(localStorage.getItem('sc_journal')||'[]');
+    if(!e.length){c.innerHTML='<p style="font-size:12px;color:var(--text-dim)">No entries yet.</p>';return;}
+    c.innerHTML=e.map((en,i)=>`<div class="j-entry"><div class="j-meta">${new Date(en.time).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</div><div class="j-body">${this.esc(en.text)}</div><button class="btn-del" onclick="app.delEntry(${i})">✕</button></div>`).join('');
+  },
+
+  delEntry(i){
+    const e=JSON.parse(localStorage.getItem('sc_journal')||'[]');
+    e.splice(i,1);localStorage.setItem('sc_journal',JSON.stringify(e));
+    this.renderEntries();this.updateAll();this.toast('Entry deleted');
+  },
+
+  renderLog(){
+    const c=document.getElementById('logContent');if(!c)return;
+    const l=this.getLog();
+    if(!l.length){c.innerHTML='<p style="font-size:12px;color:var(--text-dim)">No contacts logged yet.</p>';return;}
+    c.innerHTML=[...l].reverse().map(e=>`<div class="log-entry"><strong>${this.esc(e.name)}</strong><small>${new Date(e.time).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'})}</small></div>`).join('');
+  },
+
+  exportData(){
+    const l=this.getLog();
+    const j=JSON.parse(localStorage.getItem('sc_journal')||'[]');
+    const allTasks=Object.values(PHASES).flat();
+    const done=allTasks.filter(i=>localStorage.getItem('cl_'+i.id)==='1');
+    let txt='=== SECOND CHANCE REENTRY PORTAL — PROGRESS EXPORT ===\n';
+    txt+='Version 2026.1 · Curated by Devyn Mack\n';
+    txt+='Export Date: '+new Date().toLocaleDateString()+'\n\n';
+    txt+='CHECKLIST TASKS COMPLETED ('+done.length+'/'+allTasks.length+'):\n';
+    done.forEach(t=>txt+='  ✓ '+t.label+'\n');
+    txt+='\nRESOURCES CONTACTED ('+l.length+'):\n';
+    l.forEach(e=>txt+='  • '+e.name+' — '+new Date(e.time).toLocaleDateString()+'\n');
+    txt+='\nJOURNAL ENTRIES ('+j.length+'):\n';
+    j.forEach(e=>txt+='\n['+new Date(e.time).toLocaleDateString()+']\n'+e.text+'\n');
+    const blob=new Blob([txt],{type:'text/plain'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='second-chance-progress-'+new Date().toISOString().slice(0,10)+'.txt';
+    a.click();this.toast('📤 Exported!');
+  },
+
+  confirmReset(){
+    if(confirm('⚠️ This will erase ALL progress, notes, and journal entries. Are you sure?')){
+      localStorage.clear();this.toast('Cleared. Reloading…');setTimeout(()=>location.reload(),1500);
+    }
+  },
+
+  esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')},
+
+  toast(msg,ms=2600){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.classList.add('on');
+    clearTimeout(this._tt);this._tt=setTimeout(()=>t.classList.remove('on'),ms);
+  }
+};
+
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.phase-card').forEach(c=>c.classList.remove('active'));
+  const panel=document.getElementById('tab-'+id);
+  if(panel)panel.classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>{if((b.getAttribute('onclick')||'').includes("'"+id+"'"))b.classList.add('active');});
+  const pc=document.querySelector('.phase-card[data-phase="'+id.replace('phase','')+'"]');
+  if(pc)pc.classList.add('active');
+  if(id==='log')app.renderLog();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSection(hdr){
+  const body=hdr.nextElementSibling;
+  const chev=hdr.querySelector('.res-chev');
+  body.classList.toggle('open');chev.classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded',()=>app.init());
+</script>
+</body>
+</html>
