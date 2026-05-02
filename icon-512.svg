@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1c3a57" />
+      <stop offset="100%" stop-color="#0B1F33" />
+    </radialGradient>
+    
+    <linearGradient id="pathGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F9B24C" />
+      <stop offset="100%" stop-color="#FFD18B" />
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)"/>
+
+  <path d="M260 210 Q290 200 320 220 T340 280 T280 340 T220 320 T210 250 Z" 
+        fill="#1C9FBF" fill-opacity="0.12" />
+
+  <circle cx="256" cy="256" r="185" stroke="#145d70" stroke-width="20" fill="none" opacity="0.5"/>
+  <circle cx="256" cy="256" r="185" stroke="#1C9FBF" stroke-width="12" fill="none"/>
+
+  <g stroke="white" stroke-width="10" stroke-linecap="round">
+    <line x1="256" y1="85" x2="256" y2="110" /> <line x1="256" y1="402" x2="256" y2="427" /> <line x1="85" y1="256" x2="110" y2="256" /> <line x1="402" y1="256" x2="427" y2="256" /> </g>
+
+  <path d="M195 230 V310 H235 V230 Z" stroke="white" stroke-width="5" fill="none" opacity="0.8"/>
+  <circle cx="225" cy="275" r="3" fill="white" />
+
+  <path d="M190 410 C 210 350, 260 300, 370 200" 
+        stroke="url(#pathGrad)" stroke-width="42" stroke-linecap="round" fill="none" />
+
+  <g filter="url(#glow)">
+    <path d="M370 130 L385 180 L435 195 L385 210 L370 260 L355 210 L305 195 L355 180 Z" fill="white"/>
+    <path d="M370 155 L378 187 L410 195 L378 203 L370 235 L362 203 L330 195 L362 187 Z" fill="#1C9FBF"/>
+  </g>
+</svg>
