@@ -2,7 +2,7 @@
   "name": "Second Chance — Florida Reentry Portal",
   "short_name": "Second Chance",
   "description": "Phase-by-phase reentry guidance, 50+ Florida resources, legal rights, GPS locator. Curated by Devyn Mack.",
-  "start_url": "./florida-reentry-dashboard.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -24,19 +24,19 @@
       "name": "Phase 1 — First 72 Hours",
       "short_name": "Phase 1",
       "description": "Critical survival actions for the first 72 hours",
-      "url": "./florida-reentry-dashboard.html#phase1"
+      "url": "./index.html#phase1"
     },
     {
       "name": "Resources",
       "short_name": "Resources",
       "description": "50+ Florida reentry resources",
-      "url": "./florida-reentry-dashboard.html#resources"
+      "url": "./index.html#resources"
     },
     {
       "name": "Your Rights",
       "short_name": "Rights",
       "description": "Florida Felon Bill of Rights",
-      "url": "./florida-reentry-dashboard.html#rights"
+      "url": "./index.html#rights"
     }
   ]
 }
