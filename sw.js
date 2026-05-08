@@ -1,56 +1,120 @@
-// Second Chance PWA — Service Worker
-// Curated by D. W. STIPP· Version 2026.1
-// This file makes the app work OFFLINE after first load
+// ============================================================
+// SECOND CHANCE PWA — Service Worker
+// Version: second-chance-v2026.2
+// Upgrade: versioned cache, GET-only, safe fetch, offline fallback
+// ============================================================
 
-const CACHE_NAME = 'second-chance-v2026.1';
+const CACHE_NAME = 'second-chance-v2026.2';
 
-// Everything we want to cache for offline use
-const ASSETS_TO_CACHE = [
-  './florida-reentry-dashboard.html',
+// Core assets — MUST work offline
+const CORE_ASSETS = [
+  './dashboard.html',
+  './rights.html',
+  './phase1.html',
+  './bay-county.html',
+  './broward.html',
+  './palm-beach.html',
+  './miami-dade.html',
+  './offline.html',
   './manifest.json',
-  'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap'
+  './sw.js'
 ];
 
-// Install: cache all assets
+// ── INSTALL ──────────────────────────────────────────────────
+// Cache all core assets on install
 self.addEventListener('install', event => {
+  console.log('[SW] Installing:', CACHE_NAME);
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.log('Cache failed for some assets:', err);
-      });
+      console.log('[SW] Caching core assets');
+      return cache.addAll(CORE_ASSETS);
+    }).catch(err => {
+      console.error('[SW] Cache install failed:', err);
     })
   );
+  // Force this SW to activate immediately, don't wait for old one to die
   self.skipWaiting();
 });
 
-// Activate: clean up old caches
+// ── ACTIVATE ─────────────────────────────────────────────────
+// Delete any old cache versions when new SW takes over
 self.addEventListener('activate', event => {
+  console.log('[SW] Activating:', CACHE_NAME);
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => {
+            console.log('[SW] Deleting old cache:', key);
+            return caches.delete(key);
+          })
       );
     })
   );
+  // Take control of all open tabs immediately
   self.clients.claim();
 });
 
-// Fetch: serve from cache first, fall back to network
+// ── FETCH ────────────────────────────────────────────────────
+// Cache-first for core assets, network-first for everything else
 self.addEventListener('fetch', event => {
+  const request = event.request;
+  const url = new URL(request.url);
+
+  // 1. Only handle GET requests — never intercept POST/PUT/DELETE
+  if (request.method !== 'GET') return;
+
+  // 2. Skip cross-origin requests (Google Fonts, external APIs, etc.)
+  //    Let the browser handle those normally
+  if (url.origin !== self.location.origin) return;
+
+  // 3. Skip chrome-extension and non-http requests
+  if (!request.url.startsWith('http')) return;
+
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        // Cache successful responses
-        if (response && response.status === 200 && response.type !== 'opaque') {
+    caches.match(request).then(cached => {
+
+      // ── CACHE HIT: return immediately (offline-first)
+      if (cached) {
+        console.log('[SW] Served from cache:', request.url);
+        return cached;
+      }
+
+      // ── CACHE MISS: try network, then cache the result
+      return fetch(request).then(response => {
+
+        // Only cache valid, successful, same-origin responses
+        if (
+          response &&
+          response.status === 200 &&
+          response.type === 'basic' // 'basic' = same-origin only
+        ) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, clone);
+            console.log('[SW] Cached new resource:', request.url);
+          });
         }
+
         return response;
+
       }).catch(() => {
-        // If both cache and network fail, return the main app
-        return caches.match('./florida-reentry-dashboard.html');
+        // ── NETWORK FAILED: serve offline fallback page
+        console.warn('[SW] Network failed, serving offline page');
+        return caches.match('./offline.html');
       });
+
     })
   );
+});
+
+// ── MESSAGE HANDLER ──────────────────────────────────────────
+// Allows app to trigger SW updates programmatically
+// Usage from app: navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' })
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    console.log('[SW] Skip waiting triggered by app');
+    self.skipWaiting();
+  }
 });
