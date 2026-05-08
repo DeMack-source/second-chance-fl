@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Offline | Second Chance</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 20px;
+            background: #1a1a2e; color: white;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center; padding: 30px 0 20px;
+        }
+        .icon { font-size: 60px; margin-bottom: 10px; }
+        h1 { font-size: 22px; margin: 0 0 8px; color: #fff; }
+        .subtitle { font-size: 14px; opacity: 0.8; margin: 0; }
+        .alert {
+            background: #ce1126; border-radius: 10px;
+            padding: 16px; margin: 20px 0; text-align: center;
+        }
+        .alert h2 { margin: 0 0 6px; font-size: 16px; }
+        .alert p { margin: 0; font-size: 13px; opacity: 0.9; }
+        .section { margin-bottom: 20px; }
+        .section h3 {
+            font-size: 13px; letter-spacing: 1px;
+            text-transform: uppercase; color: #aaa;
+            margin: 0 0 10px; border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+        .contact-card {
+            background: #16213e; border-radius: 8px;
+            padding: 14px; margin-bottom: 10px;
+            border-left: 4px solid #004a99;
+        }
+        .contact-card.red { border-left-color: #ce1126; }
+        .contact-card.green { border-left-color: #28a745; }
+        .contact-card.purple { border-left-color: #6f42c1; }
+        .contact-name { font-size: 15px; font-weight: bold; margin: 0 0 4px; }
+        .contact-info { font-size: 13px; opacity: 0.85; margin: 0 0 10px; line-height: 1.5; }
+        .call-btn {
+            display: block; background: #28a745; color: white;
+            padding: 10px; text-align: center; border-radius: 6px;
+            text-decoration: none; font-weight: bold; font-size: 14px;
+        }
+        .text-btn {
+            display: block; background: #6f42c1; color: white;
+            padding: 10px; text-align: center; border-radius: 6px;
+            text-decoration: none; font-weight: bold; font-size: 14px;
+        }
+        .checklist { list-style: none; padding: 0; margin: 0; }
+        .checklist li {
+            background: #16213e; border-radius: 8px;
+            padding: 12px 14px; margin-bottom: 8px;
+            font-size: 14px; line-height: 1.5;
+            border-left: 4px solid #004a99;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .checklist li .num {
+            background: #004a99; color: white;
+            border-radius: 50%; width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold; flex-shrink: 0;
+        }
+        .retry-btn {
+            display: block; width: 100%; background: #004a99;
+            color: white; padding: 14px; border: none;
+            border-radius: 10px; font-size: 16px; font-weight: bold;
+            cursor: pointer; margin-top: 10px; text-align: center;
+            text-decoration: none;
+        }
+        .retry-btn:hover { background: #003a7a; }
+        .footer { text-align: center; margin-top: 30px; font-size: 12px; opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="icon">📵</div>
+        <h1>You're Offline</h1>
+        <p class="subtitle">No internet connection detected.<br>These emergency contacts work from any phone.</p>
+    </div>
+
+    <div class="alert">
+        <h2>⚠️ Need Help Right Now?</h2>
+        <p>The numbers below work even without data or WiFi.<br>Just dial directly from your phone.</p>
+    </div>
+
+    <!-- EMERGENCY CONTACTS -->
+    <div class="section">
+        <h3>📞 Emergency Contacts — Always Available</h3>
+
+        <div class="contact-card red">
+            <p class="contact-name">🆘 Florida 211 — Basic Needs</p>
+            <p class="contact-info">Food, shelter, utilities, crisis services.<br>24/7 statewide. Free call.</p>
+            <a href="tel:211" class="call-btn">📞 Dial 2-1-1</a>
+        </div>
+
+        <div class="contact-card purple">
+            <p class="contact-name">💬 Crisis Text Line</p>
+            <p class="contact-info">Mental health crisis support. Free & confidential.<br>Text HOME to 741741. Works on any carrier.</p>
+            <a href="sms:741741&body=HOME" class="text-btn">💬 Text HOME to 741741</a>
+        </div>
+
+        <div class="contact-card green">
+            <p class="contact-name">🧠 SAMHSA — Substance Abuse Helpline</p>
+            <p class="contact-info">Free, confidential treatment referrals.<br>24/7. Available in Spanish too.</p>
+            <a href="tel:18006624357" class="call-btn">📞 1-800-662-4357</a>
+        </div>
+
+        <div class="contact-card">
+            <p class="contact-name">⚖️ Florida Legal Services</p>
+            <p class="contact-info">Free civil legal help for low-income residents.<br>Call when connection is restored.</p>
+            <p class="contact-info" style="font-size:15px; font-weight:bold;">📞 (850) 385-7900</p>
+        </div>
+
+        <div class="contact-card">
+            <p class="contact-name">🗳️ FRRC — Voting Rights</p>
+            <p class="contact-info">Florida Rights Restoration Coalition.<br>floridarrc.com — check when back online.</p>
+            <p class="contact-info" style="font-size:15px; font-weight:bold;">📞 (850) 792-2773</p>
+        </div>
+    </div>
+
+    <!-- PHASE 1 QUICK CHECKLIST -->
+    <div class="section">
+        <h3>⏱ First 72 Hours — Remember These</h3>
+        <ul class="checklist">
+            <li><span class="num">1</span>Report to your PO on time — confirm date/time from your release paperwork</li>
+            <li><span class="num">2</span>Notify Sheriff of your address within 48 hours (Fla. Stat. § 775.13)</li>
+            <li><span class="num">3</span>Get your State ID — bring birth cert + SS card + proof of FL address</li>
+            <li><span class="num">4</span>Apply for SNAP & Medicaid — call DCF: (866) 762-2237</li>
+            <li><span class="num">5</span>Start your Evidence Box — document everything with dates and names</li>
+            <li><span class="num">6</span>Open a bank account — Chime or any second-chance bank works</li>
+            <li><span class="num">7</span>Call CareerSource in your county for free job help</li>
+        </ul>
+    </div>
+
+    <!-- RETRY -->
+    <a href="./dashboard.html" class="retry-btn" onclick="window.location.reload()">
+        🔄 Try Reconnecting to Dashboard
+    </a>
+
+    <div class="footer">
+        <p>Second Chance Reentry App<br>This page works offline — bookmark it.</p>
+    </div>
+
+</body>
+</html>
