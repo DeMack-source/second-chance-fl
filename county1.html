@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources by County | Second Chance</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; min-height: 100vh; padding-bottom: 70px; }
+
+        .header { background: #004a99; color: white; padding: 20px 15px; text-align: center; }
+        .header h1 { font-size: 22px; margin-bottom: 4px; }
+        .header p { font-size: 13px; opacity: 0.9; }
+
+        .intro {
+            background: white; margin: 15px; padding: 16px;
+            border-radius: 10px; border-left: 5px solid #28a745;
+            font-size: 14px; color: #333; line-height: 1.6;
+        }
+
+        .section-label {
+            font-size: 11px; font-weight: bold; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #888;
+            padding: 12px 15px 8px; display: block;
+        }
+
+        .county-card {
+            margin: 0 15px 12px; background: white;
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-decoration: none; display: block;
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+        .county-card:active { transform: scale(0.98); }
+        .county-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+        .county-banner {
+            padding: 18px 16px; color: white;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .county-icon { font-size: 32px; flex-shrink: 0; }
+        .county-name { font-size: 18px; font-weight: bold; margin-bottom: 2px; }
+        .county-city { font-size: 13px; opacity: 0.85; }
+        .county-arrow { margin-left: auto; font-size: 20px; opacity: 0.7; }
+
+        .county-stats {
+            padding: 10px 16px; background: #f8f9fa;
+            display: flex; gap: 12px; flex-wrap: wrap;
+        }
+        .stat-chip {
+            font-size: 11px; color: #555;
+            background: white; padding: 4px 10px;
+            border-radius: 20px; border: 1px solid #ddd;
+        }
+
+        /* STATEWIDE */
+        .statewide-card {
+            margin: 0 15px 12px; background: #1a1a2e;
+            border-radius: 10px; padding: 16px;
+            border-left: 5px solid #ce1126;
+        }
+        .statewide-title { font-size: 16px; font-weight: bold; color: white; margin-bottom: 6px; }
+        .statewide-desc { font-size: 13px; color: #aaa; margin-bottom: 12px; line-height: 1.5; }
+        .statewide-btn {
+            display: block; background: #ce1126; color: white;
+            padding: 12px; border-radius: 8px; text-align: center;
+            font-weight: bold; font-size: 14px; text-decoration: none;
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1a1a2e; display: flex;
+            border-top: 2px solid #004a99; z-index: 999;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 8px 4px 6px; text-decoration: none;
+            color: #aaa; font-size: 10px; font-weight: bold;
+            letter-spacing: 0.3px; text-transform: uppercase;
+            transition: color 0.2s; border: none; background: none; cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-item.active   { color: #28a745; }
+        .nav-item.emergency { color: #ce1126; }
+        .nav-emoji { font-size: 20px; margin-bottom: 3px; line-height: 1; }
+        .nav-label { line-height: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📍 RESOURCES BY COUNTY</h1>
+        <p>Florida Reentry — Select Your County</p>
+    </div>
+
+    <div class="intro">
+        Select your county below to find housing, jobs, legal aid, food, mental health, transportation, and ID resources near you.
+    </div>
+
+    <span class="section-label">📍 Select Your County</span>
+
+    <!-- BAY COUNTY -->
+    <a href="bay-county.html" class="county-card">
+        <div class="county-banner" style="background: #004a99;">
+            <span class="county-icon">🏖️</span>
+            <div>
+                <div class="county-name">Bay County</div>
+                <div class="county-city">Panama City, FL</div>
+            </div>
+            <span class="county-arrow">›</span>
+        </div>
+        <div class="county-stats">
+            <span class="stat-chip">🏠 Housing</span>
+            <span class="stat-chip">💼 Jobs</span>
+            <span class="stat-chip">⚖️ Legal</span>
+            <span class="stat-chip">🍽️ Food</span>
+            <span class="stat-chip">🧠 Mental Health</span>
+            <span class="stat-chip">🚌 Transport</span>
+            <span class="stat-chip">🪪 ID & Docs</span>
+        </div>
+    </a>
+
+    <!-- BROWARD -->
+    <a href="broward.html" class="county-card">
+        <div class="county-banner" style="background: #28a745;">
+            <span class="county-icon">🌴</span>
+            <div>
+                <div class="county-name">Broward County</div>
+                <div class="county-city">Fort Lauderdale, FL</div>
+            </div>
+            <span class="county-arrow">›</span>
+        </div>
+        <div class="county-stats">
+            <span class="stat-chip">🏠 Housing</span>
+            <span class="stat-chip">💼 Jobs</span>
+            <span class="stat-chip">⚖️ Legal</span>
+            <span class="stat-chip">🍽️ Food</span>
+            <span class="stat-chip">🧠 Mental Health</span>
+            <span class="stat-chip">🚌 Transport</span>
+            <span class="stat-chip">🪪 ID & Docs</span>
+        </div>
+    </a>
+
+    <!-- PALM BEACH -->
+    <a href="palm-beach.html" class="county-card">
+        <div class="county-banner" style="background: #fd7e14;">
+            <span class="county-icon">🌊</span>
+            <div>
+                <div class="county-name">Palm Beach County</div>
+                <div class="county-city">West Palm Beach, FL</div>
+            </div>
+            <span class="county-arrow">›</span>
+        </div>
+        <div class="county-stats">
+            <span class="stat-chip">🏠 Housing</span>
+            <span class="stat-chip">💼 Jobs</span>
+            <span class="stat-chip">⚖️ Legal</span>
+            <span class="stat-chip">🍽️ Food</span>
+            <span class="stat-chip">🧠 Mental Health</span>
+            <span class="stat-chip">🚌 Transport</span>
+            <span class="stat-chip">🪪 ID & Docs</span>
+        </div>
+    </a>
+
+    <!-- MIAMI-DADE -->
+    <a href="miami-dade.html" class="county-card">
+        <div class="county-banner" style="background: #6f42c1;">
+            <span class="county-icon">🏙️</span>
+            <div>
+                <div class="county-name">Miami-Dade County</div>
+                <div class="county-city">Miami, FL</div>
+            </div>
+            <span class="county-arrow">›</span>
+        </div>
+        <div class="county-stats">
+            <span class="stat-chip">🏠 Housing</span>
+            <span class="stat-chip">💼 Jobs</span>
+            <span class="stat-chip">⚖️ Legal</span>
+            <span class="stat-chip">🍽️ Food</span>
+            <span class="stat-chip">🧠 Mental Health</span>
+            <span class="stat-chip">🚌 Transport</span>
+            <span class="stat-chip">🪪 ID & Docs</span>
+        </div>
+    </a>
+
+    <!-- STATEWIDE -->
+    <span class="section-label">🌎 Statewide Resources</span>
+    <div class="statewide-card">
+        <div class="statewide-title">🆘 Available Anywhere in Florida</div>
+        <div class="statewide-desc">211, SAMHSA, FRRC, Florida Legal Services, ACCESS Florida, and FLHSMV license status — these work no matter what county you're in.</div>
+        <a href="emergency.html" class="statewide-btn">📞 View Emergency Contacts</a>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item" id="nav-home">
+            <span class="nav-emoji">🏠</span><span class="nav-label">Home</span>
+        </a>
+        <a href="phase1.html" class="nav-item" id="nav-checklist">
+            <span class="nav-emoji">⏱</span><span class="nav-label">Checklist</span>
+        </a>
+        <a href="county.html" class="nav-item active" id="nav-resources">
+            <span class="nav-emoji">📍</span><span class="nav-label">Resources</span>
+        </a>
+        <a href="rights.html" class="nav-item" id="nav-rights">
+            <span class="nav-emoji">⚖️</span><span class="nav-label">Rights</span>
+        </a>
+        <a href="emergency.html" class="nav-item emergency" id="nav-emergency">
+            <span class="nav-emoji">🆘</span><span class="nav-label">Emergency</span>
+        </a>
+    </nav>
+
+</body>
+</html>
