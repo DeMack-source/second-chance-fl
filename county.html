@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>County Resources | SCLM App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1 id="county-name">Loading County...</h1>
+        <p id="county-meta">Resource Directory</p>
+    </header>
+
+    <main>
+        <section class="controls">
+            <input type="text" id="resource-search" placeholder="Search by keyword (e.g. 'housing', 'legal')...">
+            <select id="category-filter">
+                <option value="all">All Categories</option>
+                <option value="legal">Legal Advocacy</option>
+                <option value="housing">Housing</option>
+                <option value="employment">Employment</option>
+            </select>
+        </section>
+
+        <section id="resource-grid" class="grid-container">
+            </section>
+
+        <hr>
+
+        <section id="checklist-container">
+            <h2>Your Reentry Checklist</h2>
+            <div id="checklist-items">
+                </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
