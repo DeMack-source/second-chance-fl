@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts | Second Chance</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #1a1a2e; min-height: 100vh; padding-bottom: 70px; }
+
+        .header { background: #ce1126; color: white; padding: 20px 15px; text-align: center; }
+        .header h1 { font-size: 22px; margin-bottom: 4px; }
+        .header p { font-size: 13px; opacity: 0.9; }
+
+        .section-label {
+            font-size: 11px; font-weight: bold; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #888;
+            padding: 18px 15px 8px; display: block;
+        }
+
+        .contact-card {
+            margin: 0 15px 12px; background: #16213e;
+            border-radius: 10px; padding: 16px;
+            border-left: 5px solid #004a99;
+        }
+        .contact-card.red    { border-left-color: #ce1126; }
+        .contact-card.green  { border-left-color: #28a745; }
+        .contact-card.purple { border-left-color: #6f42c1; }
+        .contact-card.gold   { border-left-color: #ffc107; }
+        .contact-card.teal   { border-left-color: #17a2b8; }
+
+        .contact-name { font-size: 16px; font-weight: bold; color: white; margin-bottom: 4px; }
+        .contact-desc { font-size: 13px; color: #aaa; line-height: 1.5; margin-bottom: 12px; }
+
+        .contact-actions { display: flex; gap: 8px; }
+        .contact-btn {
+            flex: 1; padding: 12px 8px; border-radius: 8px;
+            font-size: 13px; font-weight: bold; text-align: center;
+            text-decoration: none; border: none; cursor: pointer;
+            display: block;
+        }
+        .btn-call   { background: #28a745; color: white; }
+        .btn-text   { background: #6f42c1; color: white; }
+        .btn-web    { background: #004a99; color: white; }
+        .btn-red    { background: #ce1126; color: white; }
+
+        .big-call {
+            display: block; margin: 0 15px 12px;
+            background: #ce1126; color: white;
+            padding: 18px; border-radius: 10px;
+            font-size: 18px; font-weight: bold;
+            text-align: center; text-decoration: none;
+            box-shadow: 0 4px 12px rgba(206,17,38,0.4);
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: #1a1a2e; display: flex;
+            border-top: 2px solid #004a99; z-index: 999;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 8px 4px 6px; text-decoration: none;
+            color: #aaa; font-size: 10px; font-weight: bold;
+            letter-spacing: 0.3px; text-transform: uppercase;
+            transition: color 0.2s; border: none; background: none; cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-item.active   { color: #28a745; }
+        .nav-item.emergency { color: #ce1126; }
+        .nav-emoji { font-size: 20px; margin-bottom: 3px; line-height: 1; }
+        .nav-label { line-height: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🆘 EMERGENCY CONTACTS</h1>
+        <p>One tap. These work even without WiFi or data.</p>
+    </div>
+
+    <!-- 211 FEATURED -->
+    <span class="section-label">📞 Call From Any Phone — Free</span>
+    <a href="tel:211" class="big-call">📞 Dial 2-1-1 — Florida Crisis Line</a>
+
+    <!-- CRISIS -->
+    <span class="section-label">🚨 Immediate Crisis</span>
+
+    <div class="contact-card red">
+        <div class="contact-name">🆘 Florida 211 — Basic Needs</div>
+        <div class="contact-desc">Food, shelter, utilities, and crisis services. Free. 24/7 statewide. Works from any phone — no data needed.</div>
+        <div class="contact-actions">
+            <a href="tel:211" class="contact-btn btn-red">📞 Dial 2-1-1</a>
+        </div>
+    </div>
+
+    <div class="contact-card purple">
+        <div class="contact-name">💬 Crisis Text Line</div>
+        <div class="contact-desc">Mental health crisis support. Free, confidential, 24/7. Text from any carrier — no data plan required.</div>
+        <div class="contact-actions">
+            <a href="sms:741741&body=HOME" class="contact-btn btn-text">💬 Text HOME to 741741</a>
+        </div>
+    </div>
+
+    <div class="contact-card red">
+        <div class="contact-name">🚨 911 — Life-Threatening Emergency</div>
+        <div class="contact-desc">Police, fire, or medical emergency only. If you are in immediate danger, call now.</div>
+        <div class="contact-actions">
+            <a href="tel:911" class="contact-btn btn-red">📞 Call 911</a>
+        </div>
+    </div>
+
+    <!-- MENTAL HEALTH & SUBSTANCE -->
+    <span class="section-label">🧠 Mental Health & Substance Abuse</span>
+
+    <div class="contact-card green">
+        <div class="contact-name">🧠 SAMHSA — Substance Abuse Helpline</div>
+        <div class="contact-desc">Free, confidential treatment referrals. 24/7. Available in Spanish. Connects to local Florida providers.</div>
+        <div class="contact-actions">
+            <a href="tel:18006624357" class="contact-btn btn-call">📞 1-800-662-4357</a>
+        </div>
+    </div>
+
+    <div class="contact-card purple">
+        <div class="contact-name">🧬 988 Suicide & Crisis Lifeline</div>
+        <div class="contact-desc">Call or text 988 for mental health crisis support. Free, 24/7. Replaced the old suicide hotline number.</div>
+        <div class="contact-actions">
+            <a href="tel:988" class="contact-btn btn-call">📞 Call or Text 988</a>
+        </div>
+    </div>
+
+    <div class="contact-card teal">
+        <div class="contact-name">💊 NAMI Florida — Mental Health</div>
+        <div class="contact-desc">Support, education, and peer recovery groups for returning citizens and families. Not a crisis line — for planning and support.</div>
+        <div class="contact-actions">
+            <a href="tel:8506713070" class="contact-btn btn-call">📞 (850) 671-3070</a>
+        </div>
+    </div>
+
+    <!-- LEGAL & RIGHTS -->
+    <span class="section-label">⚖️ Legal & Rights</span>
+
+    <div class="contact-card" style="border-left-color:#004a99;">
+        <div class="contact-name">⚖️ Florida Legal Services</div>
+        <div class="contact-desc">Free civil legal help statewide for low-income Floridians. Housing, employment, benefits, and reentry barriers.</div>
+        <div class="contact-actions">
+            <a href="tel:8503857900" class="contact-btn btn-web">📞 (850) 385-7900</a>
+        </div>
+    </div>
+
+    <div class="contact-card" style="border-left-color:#004a99;">
+        <div class="contact-name">🗳️ FRRC — Voting Rights Restoration</div>
+        <div class="contact-desc">Florida Rights Restoration Coalition. Free eligibility checks and LFO resolution help statewide.</div>
+        <div class="contact-actions">
+            <a href="tel:8507922773" class="contact-btn btn-web">📞 (850) 792-2773</a>
+            <a href="https://floridarrc.com" target="_blank" class="contact-btn btn-web">🌐 Website</a>
+        </div>
+    </div>
+
+    <!-- BENEFITS -->
+    <span class="section-label">💊 Benefits & Documents</span>
+
+    <div class="contact-card gold">
+        <div class="contact-name">🍽️ DCF Benefits Hotline — SNAP & Medicaid</div>
+        <div class="contact-desc">Apply for food stamps and Medicaid. Free call. Have your Social Security number ready.</div>
+        <div class="contact-actions">
+            <a href="tel:8667622237" class="contact-btn btn-call">📞 (866) 762-2237</a>
+        </div>
+    </div>
+
+    <div class="contact-card gold">
+        <div class="contact-name">🪪 Social Security Administration</div>
+        <div class="contact-desc">Replace a lost Social Security card or check your benefit status. Free national line.</div>
+        <div class="contact-actions">
+            <a href="tel:18007721213" class="contact-btn btn-call">📞 1-800-772-1213</a>
+        </div>
+    </div>
+
+    <div class="contact-card teal">
+        <div class="contact-name">🚗 FLHSMV — Driver's License Status</div>
+        <div class="contact-desc">Check your Florida license suspension status before driving. Call or check online.</div>
+        <div class="contact-actions">
+            <a href="tel:8506174000" class="contact-btn btn-call">📞 (850) 617-4000</a>
+            <a href="https://services.flhsmv.gov/dlcheck/" target="_blank" class="contact-btn btn-web">🌐 Check Online</a>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item" id="nav-home">
+            <span class="nav-emoji">🏠</span><span class="nav-label">Home</span>
+        </a>
+        <a href="phase1.html" class="nav-item" id="nav-checklist">
+            <span class="nav-emoji">⏱</span><span class="nav-label">Checklist</span>
+        </a>
+        <a href="county.html" class="nav-item" id="nav-resources">
+            <span class="nav-emoji">📍</span><span class="nav-label">Resources</span>
+        </a>
+        <a href="rights.html" class="nav-item" id="nav-rights">
+            <span class="nav-emoji">⚖️</span><span class="nav-label">Rights</span>
+        </a>
+        <a href="emergency.html" class="nav-item emergency active" id="nav-emergency">
+            <span class="nav-emoji">🆘</span><span class="nav-label">Emergency</span>
+        </a>
+    </nav>
+
+</body>
+</html>
