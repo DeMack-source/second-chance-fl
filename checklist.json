@@ -1,0 +1,475 @@
+{
+  "meta": {
+    "version": "2026.1",
+    "last_updated": "2026-05-09",
+    "title": "Second Chance Reentry Checklist",
+    "subtitle": "Florida Post-Release Action Plan",
+    "description": "A structured 72-hour action checklist for returning citizens in Florida. Tasks are organized by phase and priority. Progress is saved locally on the user's device."
+  },
+
+  "phases": [
+
+    {
+      "id": "phase_1",
+      "label": "Phase 1",
+      "title": "Hours 1–24: The First Day",
+      "emoji": "🕐",
+      "color": "#ce1126",
+      "urgency": "critical",
+      "summary": "Your highest-risk window. Move methodically. Document everything.",
+      "tasks": [
+
+        {
+          "id": "task_001",
+          "phase": "phase_1",
+          "priority": "critical",
+          "deadline": "Immediate",
+          "title": "Read Your Release Paperwork",
+          "detail": "Locate every document you were given at release. Read every condition of supervision carefully before you do anything else. This is your rulebook.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Locate all release documents",
+            "Read every condition of supervision",
+            "Write down your reporting deadline (date, time, address)",
+            "Write down your PO's name and direct phone number"
+          ]
+        },
+
+        {
+          "id": "task_002",
+          "phase": "phase_1",
+          "priority": "critical",
+          "deadline": "Within 24 hours",
+          "title": "Report to Your Probation or Parole Officer",
+          "detail": "If you are on probation or parole, confirm your exact reporting deadline from your paperwork. Report on time or early — never late. Call ahead if anything goes wrong.",
+          "statute": "Fla. Stat. § 948.03",
+          "warning": "A missed report is a technical violation. It can result in a warrant even if you did nothing else wrong.",
+          "resource_ids": [],
+          "subtasks": [
+            "Confirm reporting deadline from release paperwork",
+            "Confirm PO office address and hours",
+            "Report on time — bring all release documents",
+            "Get written confirmation of your report date"
+          ]
+        },
+
+        {
+          "id": "task_003",
+          "phase": "phase_1",
+          "priority": "critical",
+          "deadline": "Within 24 hours",
+          "title": "Secure a Safe Place to Sleep",
+          "detail": "Even a temporary address is better than no address. Your PO needs an address on file. Being homeless is not a violation by itself — but you must notify your PO of your situation immediately.",
+          "statute": null,
+          "warning": "Verify any address is compliant with your residency restrictions before giving it to your PO.",
+          "resource_ids": ["bay-001", "bay-002", "bro-002", "mia-001"],
+          "subtasks": [
+            "Confirm sleeping arrangement — family, shelter, or transitional housing",
+            "Verify address complies with all residency restrictions",
+            "Notify PO of your address in writing (text or email — creates a record)",
+            "If homeless: call 2-1-1 immediately for emergency shelter referral"
+          ]
+        },
+
+        {
+          "id": "task_004",
+          "phase": "phase_1",
+          "priority": "high",
+          "deadline": "Within 24 hours",
+          "title": "Start Your Evidence Box",
+          "detail": "Get a binder, folder, or envelope. Everything from this point forward gets documented and saved with dates and names. This binder is your legal protection if accusations are ever made.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Get a binder, folder, or envelope — any container works",
+            "Add: release paperwork and all supervision conditions",
+            "Add: any photo ID you currently have",
+            "Add: Social Security card or any proof of your number",
+            "Add: birth certificate if you have it",
+            "Add: any receipts or confirmation numbers from today",
+            "Write today's date and start a log — date, time, who you spoke to, what was said"
+          ]
+        },
+
+        {
+          "id": "task_005",
+          "phase": "phase_1",
+          "priority": "high",
+          "deadline": "Within 24 hours",
+          "title": "Make Contact With Family or Support Network",
+          "detail": "Isolation is one of the biggest risk factors in the first 72 hours. Even a phone call to someone who supports you creates accountability and emotional grounding.",
+          "statute": null,
+          "warning": "Check your supervision conditions — some may restrict contact with certain individuals.",
+          "resource_ids": [],
+          "subtasks": [
+            "Call or contact at least one trusted person today",
+            "Confirm conditions allow contact with the people you plan to reach",
+            "Let them know your situation and what you need"
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "id": "phase_2",
+      "label": "Phase 2",
+      "title": "Hours 24–48: Build Your Foundation",
+      "emoji": "🕑",
+      "color": "#fd7e14",
+      "urgency": "high",
+      "summary": "Critical deadlines and document recovery. Do not skip the 48-hour address registration.",
+      "tasks": [
+
+        {
+          "id": "task_006",
+          "phase": "phase_2",
+          "priority": "critical",
+          "deadline": "Within 48 hours — HARD DEADLINE",
+          "title": "Register Your Address With the Sheriff",
+          "detail": "Florida law requires you to notify the Sheriff of your address within 48 hours of establishing a residence. This is a separate legal requirement from notifying your PO. Failure is a standalone criminal offense.",
+          "statute": "Fla. Stat. § 775.13",
+          "warning": "This is not optional and not the same as notifying your PO. Skipping this can result in a new criminal charge.",
+          "resource_ids": ["bay-011"],
+          "subtasks": [
+            "Locate your county Sheriff's office address and phone number",
+            "Register your address in person or by the required method for your county",
+            "Get a receipt or written confirmation of registration",
+            "Add that confirmation to your Evidence Box immediately"
+          ]
+        },
+
+        {
+          "id": "task_007",
+          "phase": "phase_2",
+          "priority": "critical",
+          "deadline": "Day 2",
+          "title": "Get Your State ID or Driver's License",
+          "detail": "A Florida State ID or Driver's License is required for almost every service, job application, housing application, and benefit enrollment. Get this as early as possible. You do not need to drive to get a State ID.",
+          "statute": null,
+          "warning": "Check your license suspension status before going. Driving on a suspended license is a new criminal charge.",
+          "resource_ids": ["bay-021", "bay-020"],
+          "subtasks": [
+            "Check your suspension status first at services.flhsmv.gov/dlcheck",
+            "Locate the nearest DHSMV office at flhsmv.gov/offices",
+            "Bring: birth certificate + Social Security card + proof of Florida address",
+            "Ask about the FDC release fee waiver at the counter",
+            "Add your new ID to your Evidence Box"
+          ]
+        },
+
+        {
+          "id": "task_008",
+          "phase": "phase_2",
+          "priority": "high",
+          "deadline": "Day 2",
+          "title": "Apply for SNAP and Medicaid",
+          "detail": "Apply for food stamps (SNAP) and Medicaid immediately — there is often a waiting period so the earlier you apply, the sooner benefits begin. You can apply online. Drug felony convictions may affect SNAP eligibility — call DCF to confirm your specific situation.",
+          "statute": "7 U.S.C. § 2015(r) — Federal SNAP restrictions",
+          "warning": "Drug felony convictions may limit or delay SNAP eligibility. Call DCF at (866) 762-2237 to confirm before applying.",
+          "resource_ids": ["fl-002", "bay-015"],
+          "subtasks": [
+            "Apply online at myflorida.com/accessflorida or call (866) 762-2237",
+            "Have your Social Security number and address ready",
+            "Apply for both SNAP and Medicaid in the same session",
+            "Write down your application confirmation number — add to Evidence Box",
+            "Note your expected processing date"
+          ]
+        },
+
+        {
+          "id": "task_009",
+          "phase": "phase_2",
+          "priority": "high",
+          "deadline": "Day 2",
+          "title": "Open a Bank Account",
+          "detail": "Cash is a target and a liability. A bank account protects your gate money and future wages. Many banks offer second-chance accounts for people with banking history issues — no prior account required.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Research second-chance banks: Chime, Wells Fargo Clear Access, or a local credit union",
+            "Bring your State ID and Social Security number",
+            "Open the account and keep the account number in your Evidence Box",
+            "Set up direct deposit for future employment"
+          ]
+        },
+
+        {
+          "id": "task_010",
+          "phase": "phase_2",
+          "priority": "high",
+          "deadline": "Day 2",
+          "title": "Get Your Birth Certificate (If You Don't Have It)",
+          "detail": "Your birth certificate is the root document for everything else — ID, Social Security, employment. Order it online for $9 at floridahealth.gov. If you were born out of state, contact that state's vital records office.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": ["bay-023", "fl-008"],
+          "subtasks": [
+            "Order online at floridahealth.gov/certificates/certificates/birth — $9 fee",
+            "Or visit your local county health department for in-person request",
+            "Add to Evidence Box when received"
+          ]
+        },
+
+        {
+          "id": "task_011",
+          "phase": "phase_2",
+          "priority": "medium",
+          "deadline": "Day 2",
+          "title": "Replace Your Social Security Card (If Missing)",
+          "detail": "If you do not have your Social Security card, replace it at your local SSA office. Free — limit 3 per year. You will need proof of identity and citizenship. Call first to confirm current requirements.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": ["bay-022"],
+          "subtasks": [
+            "Locate your nearest SSA office at ssa.gov or call 1-800-772-1213",
+            "Bring proof of identity (any photo ID) and citizenship (birth certificate if available)",
+            "Or apply online at ssa.gov/ssnumber if you have existing ID",
+            "Add card to Evidence Box when received"
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "id": "phase_3",
+      "label": "Phase 3",
+      "title": "Hours 48–72: Get Strategic",
+      "emoji": "🕒",
+      "color": "#28a745",
+      "urgency": "medium",
+      "summary": "The emergency is over. Now build systems. Plan your first 30 days with intention.",
+      "tasks": [
+
+        {
+          "id": "task_012",
+          "phase": "phase_3",
+          "priority": "high",
+          "deadline": "Day 3",
+          "title": "Know Your Full Financial Obligations",
+          "detail": "Court costs, restitution, fines, and fees do not go away. Get a complete accounting of what you owe, to whom, and by when — before your PO brings it up. If you cannot pay, there are legal options.",
+          "statute": "Fla. Stat. § 938.30 — Court cost modification",
+          "warning": "Unpaid LFOs can block your voting rights restoration, driver's license, and professional licensing.",
+          "resource_ids": ["bay-011"],
+          "subtasks": [
+            "Search your county clerk's online portal for your case number and balances",
+            "Request a written financial obligation summary from the Clerk of Courts",
+            "List every obligation: amount, to whom, due date",
+            "If you cannot pay: research court cost modification under Fla. Stat. § 938.30",
+            "Add all LFO documents to your Evidence Box"
+          ]
+        },
+
+        {
+          "id": "task_013",
+          "phase": "phase_3",
+          "priority": "high",
+          "deadline": "Day 3",
+          "title": "Contact CareerSource in Your County",
+          "detail": "Florida's public workforce system offers free job placement, resume help, and skills training. Walk in or call your local CareerSource office — no appointment needed at most locations. Tell them you are a returning citizen and ask about the HIRES program.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": ["bay-006", "bro-005", "pb-004", "mia-005"],
+          "subtasks": [
+            "Find your local CareerSource office at careersourceflorida.com",
+            "Walk in or call — no appointment required at most offices",
+            "Ask specifically about the HIRES Reentry Program",
+            "Bring your State ID and a mental list of your skills and certifications",
+            "Ask about the Work Opportunity Tax Credit (WOTC) — it is leverage with employers"
+          ]
+        },
+
+        {
+          "id": "task_014",
+          "phase": "phase_3",
+          "priority": "high",
+          "deadline": "Day 3",
+          "title": "Connect With a Reentry Organization",
+          "detail": "You do not have to navigate this alone. Reentry organizations have case managers who know the local system and can help you avoid costly mistakes. One phone call can unlock a network of support.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": ["bay-001", "bro-001", "pb-001", "mia-001"],
+          "subtasks": [
+            "Look up your county's reentry resources in this app",
+            "Call at least one reentry organization today",
+            "Ask if a case manager is available to meet with you",
+            "Ask your PO if there is a reentry coordinator assigned to your supervision"
+          ]
+        },
+
+        {
+          "id": "task_015",
+          "phase": "phase_3",
+          "priority": "high",
+          "deadline": "Day 3",
+          "title": "Map Your Next 30 Days",
+          "detail": "By hour 72 the emergency is over and the real work begins. Use this window to plan intentionally — not just react. Write it down. A plan in your head is not a plan.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Write down your 3 biggest needs right now (housing, income, transportation, health)",
+            "Identify one specific resource from this app for each need",
+            "Write one realistic 30-day goal you can measure",
+            "Schedule your next PO appointment in your phone or on paper",
+            "Identify one person who will hold you accountable to your plan"
+          ]
+        },
+
+        {
+          "id": "task_016",
+          "phase": "phase_3",
+          "priority": "medium",
+          "deadline": "Day 3",
+          "title": "Check Your Driver's License Suspension Status",
+          "detail": "If you have not already done this, check your license status before driving anything. Certain offenses trigger automatic suspensions. Driving while suspended is a new criminal charge that can violate your supervision.",
+          "statute": "Fla. Stat. § 322.055",
+          "warning": "Do not drive until you have confirmed your license is valid. A DWLS charge can trigger a VOP warrant.",
+          "resource_ids": ["fl-007"],
+          "subtasks": [
+            "Check status at services.flhsmv.gov/dlcheck",
+            "If suspended: call DHSMV to understand the reinstatement process",
+            "If suspended for non-payment: research court cost modification (§ 938.30)",
+            "Use public transit until your license is confirmed valid"
+          ]
+        },
+
+        {
+          "id": "task_017",
+          "phase": "phase_3",
+          "priority": "medium",
+          "deadline": "Day 3",
+          "title": "Check Your Voting Rights Eligibility",
+          "detail": "Under Amendment 4, most returning citizens can restore their voting rights after completing their full sentence including probation and parole. However, all Legal Financial Obligations must be paid first. Voting before you are eligible is a 3rd-degree felony.",
+          "statute": "Fla. Const. Art. VI, § 4 | Fla. Stat. § 98.0751",
+          "warning": "Do NOT register to vote until you have confirmed eligibility. Contact FRRC for a free eligibility check.",
+          "resource_ids": ["bay-012", "fl-005"],
+          "subtasks": [
+            "Visit floridarrc.com for a free eligibility check",
+            "Confirm all LFOs are paid before attempting to register",
+            "If you have outstanding LFOs: contact FRRC — they can help with resolution",
+            "Once confirmed eligible: register at dos.myflorida.com/elections"
+          ]
+        }
+
+      ]
+    },
+
+    {
+      "id": "phase_4",
+      "label": "Phase 4",
+      "title": "What to Avoid — All 72 Hours",
+      "emoji": "🚫",
+      "color": "#6c757d",
+      "urgency": "warning",
+      "summary": "People, places, and things that can end your freedom in the first 72 hours.",
+      "tasks": [
+
+        {
+          "id": "task_018",
+          "phase": "phase_4",
+          "priority": "critical",
+          "deadline": "Always",
+          "title": "People, Places & Situations to Avoid",
+          "detail": "The first 72 hours are when most people get tripped up — not by big decisions, but by small ones. Know your risks before they find you.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Do not associate with known felons if prohibited by your conditions",
+            "Do not return to the neighborhood of your offense",
+            "Do not consume alcohol or drugs — even legal substances if prohibited",
+            "Do not post on social media anything that could be misread by your PO or law enforcement",
+            "Do not sign any legal document without reading it fully and understanding it",
+            "Do not lend your ID, phone, or address to anyone",
+            "Do not accept quick money offers — the risk is never worth it",
+            "Do not miss any scheduled appointment without calling ahead first"
+          ]
+        },
+
+        {
+          "id": "task_019",
+          "phase": "phase_4",
+          "priority": "critical",
+          "deadline": "Always",
+          "title": "The Golden Rule: Document Everything",
+          "detail": "Every meeting, every phone call, every form submitted — write it down. Date, time, who you spoke to, what was said. This documentation has kept people out of prison when accusations were made against them.",
+          "statute": null,
+          "warning": null,
+          "resource_ids": [],
+          "subtasks": [
+            "Carry a small notebook or use your phone notes app",
+            "Log every interaction with law enforcement, PO, or courts",
+            "Save every confirmation number, receipt, and text message",
+            "Never rely on verbal agreements — get everything in writing"
+          ]
+        }
+
+      ]
+    }
+
+  ],
+
+  "completion_messages": {
+    "phase_1": "Phase 1 complete. You made it through the hardest window. Keep going.",
+    "phase_2": "Phase 2 complete. Foundation is building. You are ahead of where most people are at this point.",
+    "phase_3": "Phase 3 complete. 72 hours done. You have a plan. Now work the plan.",
+    "all_complete": "All phases complete. Your first 72 hours are handled. The hardest part is behind you."
+  },
+
+  "emergency_contacts": [
+    {
+      "id": "ec-001",
+      "name": "Florida 211",
+      "description": "Food, shelter, utilities, crisis services. 24/7 statewide.",
+      "phone": "211",
+      "phone_display": "2-1-1",
+      "type": "crisis"
+    },
+    {
+      "id": "ec-002",
+      "name": "Crisis Text Line",
+      "description": "Mental health crisis support. Text HOME to 741741.",
+      "phone": null,
+      "phone_display": "Text HOME to 741741",
+      "type": "mental_health"
+    },
+    {
+      "id": "ec-003",
+      "name": "SAMHSA Helpline",
+      "description": "Substance abuse and mental health. Free, 24/7.",
+      "phone": "18006624357",
+      "phone_display": "1-800-662-4357",
+      "type": "mental_health"
+    },
+    {
+      "id": "ec-004",
+      "name": "DCF Benefits Hotline",
+      "description": "SNAP, Medicaid, and other Florida benefits.",
+      "phone": "8667622237",
+      "phone_display": "(866) 762-2237",
+      "type": "benefits"
+    },
+    {
+      "id": "ec-005",
+      "name": "Florida Legal Services",
+      "description": "Free civil legal help statewide.",
+      "phone": "8503857900",
+      "phone_display": "(850) 385-7900",
+      "type": "legal"
+    },
+    {
+      "id": "ec-006",
+      "name": "FRRC — Voting Rights",
+      "description": "Florida Rights Restoration Coalition.",
+      "phone": "8507922773",
+      "phone_display": "(850) 792-2773",
+      "type": "legal"
+    }
+  ]
+}
