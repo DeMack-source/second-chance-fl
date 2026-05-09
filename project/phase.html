@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1: First 72 Hours | Second Chance</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; min-height: 100vh; }
+
+        /* HEADER */
+        .header {
+            background: #004a99; color: white;
+            padding: 20px 15px 15px; text-align: center;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header h1 { font-size: 20px; margin-bottom: 4px; }
+        .header p { font-size: 13px; opacity: 0.85; margin-bottom: 12px; }
+
+        /* PROGRESS BAR */
+        .progress-wrap { background: rgba(255,255,255,0.2); border-radius: 20px; height: 10px; margin: 0 10px; }
+        .progress-bar {
+            background: #28a745; height: 10px; border-radius: 20px;
+            transition: width 0.4s ease; width: 0%;
+        }
+        .progress-label {
+            font-size: 12px; opacity: 0.9; margin-top: 6px;
+            text-align: center;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: block; background: #ce1126; color: white;
+            padding: 12px; text-align: center; text-decoration: none;
+            font-weight: bold; font-size: 14px; margin: 12px 15px;
+            border-radius: 8px;
+        }
+
+        /* PHASE BLOCK */
+        .phase-block { margin: 0 15px 16px; }
+        .phase-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px; border-radius: 8px 8px 0 0;
+            cursor: pointer; user-select: none;
+            position: relative;
+        }
+        .phase-emoji { font-size: 22px; flex-shrink: 0; }
+        .phase-title-wrap { flex: 1; }
+        .phase-label { font-size: 11px; font-weight: bold; letter-spacing: 1px; opacity: 0.85; text-transform: uppercase; }
+        .phase-title { font-size: 16px; font-weight: bold; color: white; line-height: 1.3; }
+        .phase-summary { font-size: 12px; color: white; opacity: 0.85; margin-top: 3px; }
+        .phase-toggle { font-size: 18px; color: white; opacity: 0.8; }
+        .phase-complete-badge {
+            position: absolute; top: 10px; right: 40px;
+            background: white; color: #28a745;
+            font-size: 11px; font-weight: bold;
+            padding: 3px 8px; border-radius: 20px;
+            display: none;
+        }
+        .phase-complete-badge.show { display: block; }
+
+        .phase-body {
+            background: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .phase-body.collapsed { display: none; }
+
+        /* TASK CARD */
+        .task-card {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .task-card:last-child { border-bottom: none; }
+        .task-card.completed { background: #f0fff4; }
+
+        .task-top {
+            display: flex; align-items: flex-start; gap: 12px;
+            cursor: pointer;
+        }
+        .task-checkbox {
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 2px solid #ccc; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 1px; transition: all 0.2s; background: white;
+        }
+        .task-checkbox.checked {
+            background: #28a745; border-color: #28a745;
+        }
+        .task-checkbox.checked::after {
+            content: '✓'; color: white; font-size: 14px; font-weight: bold;
+        }
+        .task-checkbox.critical { border-color: #ce1126; }
+        .task-checkbox.critical.checked { background: #28a745; border-color: #28a745; }
+
+        .task-title-wrap { flex: 1; }
+        .task-badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 5px; }
+        .task-priority {
+            font-size: 10px; font-weight: bold; padding: 2px 8px;
+            border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .priority-critical { background: #ffe0e0; color: #ce1126; }
+        .priority-high     { background: #fff3cd; color: #856404; }
+        .priority-medium   { background: #e8f4fd; color: #004a99; }
+        .priority-warning  { background: #f0f0f0; color: #555; }
+
+        .task-deadline {
+            font-size: 10px; color: #666; padding: 2px 8px;
+            border-radius: 20px; background: #f0f0f0;
+        }
+        .task-title {
+            font-size: 15px; font-weight: bold; color: #1a1a1a;
+            line-height: 1.3;
+        }
+        .task-title.done { text-decoration: line-through; color: #888; }
+
+        /* EXPAND ARROW */
+        .task-expand { font-size: 14px; color: #999; flex-shrink: 0; padding-top: 4px; }
+
+        /* TASK DETAIL — hidden until expanded */
+        .task-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+        .task-detail.open { display: block; }
+
+        .task-description {
+            font-size: 14px; color: #333; line-height: 1.6; margin-bottom: 10px;
+        }
+        .task-statute {
+            font-size: 12px; color: #004a99; font-style: italic;
+            margin-bottom: 10px; padding: 6px 10px;
+            background: #e8f4fd; border-radius: 6px;
+        }
+        .task-warning {
+            font-size: 13px; color: #ce1126;
+            background: #fff5f5; border-left: 3px solid #ce1126;
+            padding: 8px 12px; border-radius: 0 6px 6px 0;
+            margin-bottom: 10px; line-height: 1.5;
+        }
+
+        /* SUBTASKS */
+        .subtask-list { list-style: none; padding: 0; }
+        .subtask-item {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        .subtask-item:last-child { border-bottom: none; }
+        .subtask-check {
+            width: 18px; height: 18px; border-radius: 4px;
+            border: 2px solid #ccc; flex-shrink: 0; margin-top: 1px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; background: white;
+        }
+        .subtask-check.checked {
+            background: #28a745; border-color: #28a745;
+        }
+        .subtask-check.checked::after {
+            content: '✓'; color: white; font-size: 11px; font-weight: bold;
+        }
+        .subtask-text { font-size: 13px; color: #333; line-height: 1.5; flex: 1; }
+        .subtask-text.done { text-decoration: line-through; color: #aaa; }
+
+        /* PHASE COMPLETION MESSAGE */
+        .phase-complete-msg {
+            display: none; background: #28a745; color: white;
+            padding: 14px; text-align: center; font-weight: bold;
+            font-size: 14px; border-radius: 0 0 8px 8px;
+        }
+        .phase-complete-msg.show { display: block; }
+
+        /* RESET BUTTON */
+        .reset-section {
+            margin: 10px 15px 30px; text-align: center;
+        }
+        .reset-btn {
+            background: none; border: 2px solid #ccc; color: #999;
+            padding: 10px 24px; border-radius: 8px; font-size: 13px;
+            cursor: pointer;
+        }
+        .reset-btn:hover { border-color: #ce1126; color: #ce1126; }
+
+        /* LOADING STATE */
+        .loading {
+            text-align: center; padding: 60px 20px; color: #666;
+        }
+        .loading .spinner {
+            font-size: 40px; animation: spin 1s linear infinite;
+            display: block; margin-bottom: 16px;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ERROR STATE */
+        .error-msg {
+            background: #fff5f5; border: 1px solid #ce1126;
+            border-radius: 8px; padding: 20px; margin: 15px;
+            text-align: center; color: #ce1126;
+        }
+
+        /* ALL DONE BANNER */
+        .all-done-banner {
+            display: none; background: linear-gradient(135deg, #28a745, #004a99);
+            color: white; margin: 0 15px 20px; padding: 20px;
+            border-radius: 10px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .all-done-banner.show { display: block; }
+        .all-done-banner h2 { font-size: 20px; margin-bottom: 8px; }
+        .all-done-banner p { font-size: 14px; opacity: 0.9; }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 18px; }
+            .phase-title { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>⏱ PHASE 1: FIRST 72 HOURS</h1>
+        <p>Florida Reentry — Your Critical Action Checklist</p>
+        <div class="progress-wrap">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Loading...</div>
+    </div>
+
+    <a href="dashboard.html" class="back-btn">← BACK TO DASHBOARD</a>
+
+    <!-- ALL DONE BANNER -->
+    <div class="all-done-banner" id="allDoneBanner">
+        <h2>🎉 All Phases Complete</h2>
+        <p>Your first 72 hours are handled. The hardest part is behind you.</p>
+    </div>
+
+    <!-- CHECKLIST RENDERS HERE -->
+    <div id="checklistContainer">
+        <div class="loading">
+            <span class="spinner">⏳</span>
+            Loading your checklist...
+        </div>
+    </div>
+
+    <!-- RESET -->
+    <div class="reset-section">
+        <button class="reset-btn" onclick="confirmReset()">🔄 Reset All Progress</button>
+    </div>
+
+    <script>
+    // ─────────────────────────────────────────────
+    // STORAGE KEYS
+    // ─────────────────────────────────────────────
+    const STORAGE_KEY = 'sc_checklist_progress';
+    const STORAGE_SUBTASK_KEY = 'sc_subtask_progress';
+
+    // ─────────────────────────────────────────────
+    // LOAD PROGRESS FROM localStorage
+    // ─────────────────────────────────────────────
+    function loadProgress() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : {};
+        } catch { return {}; }
+    }
+
+    function loadSubtaskProgress() {
+        try {
+            const raw = localStorage.getItem(STORAGE_SUBTASK_KEY);
+            return raw ? JSON.parse(raw) : {};
+        } catch { return {}; }
+    }
+
+    // ─────────────────────────────────────────────
+    // SAVE PROGRESS TO localStorage
+    // ─────────────────────────────────────────────
+    function saveProgress(progress) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+        } catch (e) {
+            console.warn('[SC] Could not save progress:', e);
+        }
+    }
+
+    function saveSubtaskProgress(progress) {
+        try {
+            localStorage.setItem(STORAGE_SUBTASK_KEY, JSON.stringify(progress));
+        } catch (e) {
+            console.warn('[SC] Could not save subtask progress:', e);
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // RENDER THE FULL CHECKLIST
+    // ─────────────────────────────────────────────
+    function renderChecklist(data) {
+        const container = document.getElementById('checklistContainer');
+        const progress = loadProgress();
+        const subtaskProgress = loadSubtaskProgress();
+        container.innerHTML = '';
+
+        data.phases.forEach((phase, phaseIndex) => {
+            const phaseEl = document.createElement('div');
+            phaseEl.className = 'phase-block';
+            phaseEl.id = `phase_${phase.id}`;
+
+            // Count completed tasks in this phase
+            const phaseTasks = phase.tasks;
+            const completedCount = phaseTasks.filter(t => progress[t.id]).length;
+            const isPhaseComplete = completedCount === phaseTasks.length;
+
+            // Phase header color based on urgency
+            const colors = {
+                critical: '#ce1126',
+                high: '#fd7e14',
+                medium: '#28a745',
+                warning: '#6c757d'
+            };
+            const bgColor = colors[phase.urgency] || '#004a99';
+
+            phaseEl.innerHTML = `
+                <div class="phase-header" style="background:${bgColor}" onclick="togglePhase('body_${phase.id}', this)">
+                    <span class="phase-emoji">${phase.emoji}</span>
+                    <div class="phase-title-wrap">
+                        <div class="phase-label">${phase.label}</div>
+                        <div class="phase-title">${phase.title}</div>
+                        <div class="phase-summary">${phase.summary}</div>
+                    </div>
+                    <span class="phase-complete-badge ${isPhaseComplete ? 'show' : ''}" id="badge_${phase.id}">✓ Done</span>
+                    <span class="phase-toggle" id="toggle_${phase.id}">▼</span>
+                </div>
+                <div class="phase-body" id="body_${phase.id}">
+                    ${phaseTasks.map(task => renderTask(task, progress, subtaskProgress)).join('')}
+                    <div class="phase-complete-msg ${isPhaseComplete ? 'show' : ''}" id="msg_${phase.id}">
+                        ${data.completion_messages[phase.id] || '✅ Phase complete!'}
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(phaseEl);
+        });
+
+        updateGlobalProgress(data, progress);
+    }
+
+    // ─────────────────────────────────────────────
+    // RENDER A SINGLE TASK CARD
+    // ─────────────────────────────────────────────
+    function renderTask(task, progress, subtaskProgress) {
+        const isChecked = !!progress[task.id];
+        const priorityClass = `priority-${task.priority}`;
+        const priorityLabel = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+
+        const subtasksHTML = task.subtasks && task.subtasks.length > 0 ? `
+            <ul class="subtask-list">
+                ${task.subtasks.map((sub, i) => {
+                    const subKey = `${task.id}_sub_${i}`;
+                    const subChecked = !!(subtaskProgress[subKey]);
+                    return `
+                        <li class="subtask-item" onclick="toggleSubtask('${subKey}', this)">
+                            <div class="subtask-check ${subChecked ? 'checked' : ''}"></div>
+                            <span class="subtask-text ${subChecked ? 'done' : ''}">${sub}</span>
+                        </li>
+                    `;
+                }).join('')}
+            </ul>
+        ` : '';
+
+        const statuteHTML = task.statute ? `<div class="task-statute">📋 ${task.statute}</div>` : '';
+        const warningHTML = task.warning ? `<div class="task-warning">⚠️ ${task.warning}</div>` : '';
+
+        return `
+            <div class="task-card ${isChecked ? 'completed' : ''}" id="card_${task.id}">
+                <div class="task-top" onclick="toggleTask('${task.id}', '${task.phase}', this)">
+                    <div class="task-checkbox ${task.priority} ${isChecked ? 'checked' : ''}" id="check_${task.id}"></div>
+                    <div class="task-title-wrap">
+                        <div class="task-badge-row">
+                            <span class="task-priority ${priorityClass}">${priorityLabel}</span>
+                            <span class="task-deadline">${task.deadline}</span>
+                        </div>
+                        <div class="task-title ${isChecked ? 'done' : ''}" id="title_${task.id}">${task.title}</div>
+                    </div>
+                    <span class="task-expand" id="expand_${task.id}">›</span>
+                </div>
+                <div class="task-detail" id="detail_${task.id}">
+                    <div class="task-description">${task.detail}</div>
+                    ${statuteHTML}
+                    ${warningHTML}
+                    ${subtasksHTML}
+                    <div style="margin-top:12px;">
+                        <button
+                            onclick="markTaskDone('${task.id}', '${task.phase}')"
+                            style="width:100%; background:${isChecked ? '#6c757d' : '#28a745'}; color:white; padding:12px; border:none; border-radius:8px; font-size:14px; font-weight:bold; cursor:pointer;"
+                            id="btn_${task.id}">
+                            ${isChecked ? '✓ Completed — Tap to Undo' : '✅ Mark as Complete'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ─────────────────────────────────────────────
+    // TOGGLE TASK EXPANSION
+    // ─────────────────────────────────────────────
+    function toggleTask(taskId, phaseId, el) {
+        const detail = document.getElementById(`detail_${taskId}`);
+        const expand = document.getElementById(`expand_${taskId}`);
+        const isOpen = detail.classList.contains('open');
+        detail.classList.toggle('open', !isOpen);
+        expand.textContent = isOpen ? '›' : '⌄';
+    }
+
+    // ─────────────────────────────────────────────
+    // TOGGLE PHASE COLLAPSE
+    // ─────────────────────────────────────────────
+    function togglePhase(bodyId, headerEl) {
+        const body = document.getElementById(bodyId);
+        const phaseId = bodyId.replace('body_', '');
+        const toggle = document.getElementById(`toggle_${phaseId}`);
+        const isCollapsed = body.classList.contains('collapsed');
+        body.classList.toggle('collapsed', !isCollapsed);
+        toggle.textContent = isCollapsed ? '▼' : '▶';
+    }
+
+    // ─────────────────────────────────────────────
+    // MARK TASK COMPLETE / UNDO
+    // ─────────────────────────────────────────────
+    function markTaskDone(taskId, phaseId) {
+        const progress = loadProgress();
+        const isNowComplete = !progress[taskId];
+        progress[taskId] = isNowComplete;
+        saveProgress(progress);
+
+        // Update UI
+        const card = document.getElementById(`card_${taskId}`);
+        const check = document.getElementById(`check_${taskId}`);
+        const title = document.getElementById(`title_${taskId}`);
+        const btn = document.getElementById(`btn_${taskId}`);
+
+        card.classList.toggle('completed', isNowComplete);
+        check.classList.toggle('checked', isNowComplete);
+        title.classList.toggle('done', isNowComplete);
+        btn.textContent = isNowComplete ? '✓ Completed — Tap to Undo' : '✅ Mark as Complete';
+        btn.style.background = isNowComplete ? '#6c757d' : '#28a745';
+
+        // Check phase completion
+        checkPhaseComplete(phaseId, progress);
+        updateGlobalProgress(window._checklistData, progress);
+    }
+
+    // ─────────────────────────────────────────────
+    // TOGGLE SUBTASK
+    // ─────────────────────────────────────────────
+    function toggleSubtask(subKey, el) {
+        const subtaskProgress = loadSubtaskProgress();
+        const isNowChecked = !subtaskProgress[subKey];
+        subtaskProgress[subKey] = isNowChecked;
+        saveSubtaskProgress(subtaskProgress);
+
+        const check = el.querySelector('.subtask-check');
+        const text = el.querySelector('.subtask-text');
+        check.classList.toggle('checked', isNowChecked);
+        text.classList.toggle('done', isNowChecked);
+    }
+
+    // ─────────────────────────────────────────────
+    // CHECK IF A PHASE IS COMPLETE
+    // ─────────────────────────────────────────────
+    function checkPhaseComplete(phaseId, progress) {
+        const data = window._checklistData;
+        if (!data) return;
+
+        const phase = data.phases.find(p => p.id === phaseId);
+        if (!phase) return;
+
+        const allDone = phase.tasks.every(t => progress[t.id]);
+        const badge = document.getElementById(`badge_${phaseId}`);
+        const msg = document.getElementById(`msg_${phaseId}`);
+        if (badge) badge.classList.toggle('show', allDone);
+        if (msg) msg.classList.toggle('show', allDone);
+    }
+
+    // ─────────────────────────────────────────────
+    // UPDATE GLOBAL PROGRESS BAR
+    // ─────────────────────────────────────────────
+    function updateGlobalProgress(data, progress) {
+        if (!data) return;
+
+        const allTasks = data.phases.flatMap(p => p.tasks);
+        const total = allTasks.length;
+        const completed = allTasks.filter(t => progress[t.id]).length;
+        const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        document.getElementById('progressLabel').textContent = `${completed} of ${total} tasks complete — ${pct}%`;
+
+        const banner = document.getElementById('allDoneBanner');
+        banner.classList.toggle('show', completed === total && total > 0);
+    }
+
+    // ─────────────────────────────────────────────
+    // RESET ALL PROGRESS
+    // ─────────────────────────────────────────────
+    function confirmReset() {
+        if (confirm('Reset all checklist progress? This cannot be undone.')) {
+            localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(STORAGE_SUBTASK_KEY);
+            renderChecklist(window._checklistData);
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // LOAD DATA AND INIT
+    // ─────────────────────────────────────────────
+    async function init() {
+        try {
+            const response = await fetch('./data/checklist.json');
+            if (!response.ok) throw new Error('Failed to load checklist data');
+            const data = await response.json();
+            window._checklistData = data;
+            renderChecklist(data);
+        } catch (err) {
+            console.error('[SC] Checklist load error:', err);
+            document.getElementById('checklistContainer').innerHTML = `
+                <div class="error-msg">
+                    <strong>⚠️ Could not load checklist</strong><br><br>
+                    Make sure <code>data/checklist.json</code> exists in your project.<br><br>
+                    <small>${err.message}</small>
+                </div>
+            `;
+            document.getElementById('progressLabel').textContent = 'Error loading data';
+        }
+    }
+
+    // Start
+    init();
+    </script>
+
+</body>
+</html>
