@@ -17,7 +17,9 @@ const CORE_ASSETS = [
   './miami-dade.html',
   './offline.html',
   './manifest.json',
-  './sw.js'
+  './sw.js',
+  './data/resources.json',
+  './data/checklist.json'
 ];
 
 // ── INSTALL ──────────────────────────────────────────────────
