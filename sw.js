@@ -4,20 +4,22 @@
 // Upgrade: versioned cache, GET-only, safe fetch, offline fallback
 // ============================================================
 
-const CACHE_NAME = 'second-chance-v2026.2';
+const CACHE_NAME = 'second-chance-v2026.3';
 
-// Core assets — MUST work offline
+// Core assets — MUST work offline.
+// Keep this list to files that actually exist. It previously still named
+// dashboard.html, rights.html, phase1.html and the four per-county pages after
+// those views had been merged into index.html as tabs. cache.addAll() rejects the
+// whole batch on a single 404, so the worker never installed and offline support
+// was silently dead. Every path here is verified against the served site.
 const CORE_ASSETS = [
-  './dashboard.html',
-  './rights.html',
-  './phase1.html',
-  './bay-county.html',
-  './broward.html',
-  './palm-beach.html',
-  './miami-dade.html',
+  './',
+  './index.html',
+  './county1.html',
+  './emergency.html',
   './offline.html',
   './manifest.json',
-  './sw.js',
+  './icon-512.svg',
   './data/resources.json',
   './data/checklist.json'
 ];
@@ -29,7 +31,14 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       console.log('[SW] Caching core assets');
-      return cache.addAll(CORE_ASSETS);
+      // Add assets individually rather than with addAll(): addAll() rejects its
+      // entire promise when any single URL 404s, which turns one renamed page into
+      // a total loss of offline mode. This keeps the rest of the cache intact.
+      return Promise.all(
+        CORE_ASSETS.map(url =>
+          cache.add(url).catch(err => console.warn('[SW] Skipped asset:', url, err))
+        )
+      );
     }).catch(err => {
       console.error('[SW] Cache install failed:', err);
     })

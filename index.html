@@ -1270,7 +1270,27 @@ function toggleSection(hdr){
   body.classList.toggle('open');chev.classList.toggle('open');
 }
 
-document.addEventListener('DOMContentLoaded',()=>app.init());
+document.addEventListener('DOMContentLoaded',()=>{
+  app.init();
+  applyDeepLink();
+});
+
+// The secondary pages (emergency, county picker) use a bottom nav that points at
+// dashboard.html / phase1.html / county.html / rights.html. Those files no longer
+// exist — every one of those views is a tab in this page — so the nav deep-links
+// here instead: index.html#rights, index.html#phase1, index.html?county=broward#resources
+function applyDeepLink(){
+  try{
+    const county=new URLSearchParams(location.search).get('county');
+    const sel=document.getElementById('countyFilter');
+    if(county&&sel&&[...sel.options].some(o=>o.value===county)){
+      sel.value=county;
+      app.applyFilters();
+    }
+    const tab=(location.hash||'').replace('#','');
+    if(tab&&document.getElementById('tab-'+tab))switchTab(tab);
+  }catch(err){console.warn('[App] deep link failed',err);}
+}
 </script>
 <script>
   if ('serviceWorker' in navigator) {
